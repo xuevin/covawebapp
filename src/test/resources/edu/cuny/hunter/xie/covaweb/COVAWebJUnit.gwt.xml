@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='edu.cuny.hunter.xie.covaweb.COVAWeb'/>
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/COVAWeb/greet" class="edu.cuny.hunter.xie.covaweb.server.GreetingServiceImpl" />
+
+</module>
