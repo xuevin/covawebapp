@@ -25,12 +25,12 @@
 		<!-- This is the default servlet, it puts files in session -->
 		<servlet-class>gwtupload.server.UploadServlet</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>uploadServlet</servlet-name>
 		<url-pattern>*.gupld</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>greetServlet</servlet-name>
 		<servlet-class>edu.cuny.hunter.xie.covaweb.server.GreetingServiceImpl</servlet-class>

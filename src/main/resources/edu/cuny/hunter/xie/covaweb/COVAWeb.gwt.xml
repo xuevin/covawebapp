@@ -11,14 +11,18 @@
 	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
 	<!-- Other module inherits                                      -->
-
-	<!-- Include GWTUpload library -->
+	<inherits name='com.mvp4g.Mvp4gModule' />
 	<inherits name="gwtupload.GWTUpload" />
-	<!--Load dynamically predefined styles in the library when the application starts	-->
-	<stylesheet src="Upload.css" ></stylesheet>
+
+
+	<!--
+		Load dynamically predefined styles in the library when the application
+		starts
+	-->
+	<stylesheet src="Upload.css"></stylesheet>
 
 	<!-- Specify the app entry point class.                         -->
-	<entry-point class='edu.cuny.hunter.xie.covaweb.client.COVAWeb' />
+	<entry-point class='edu.cuny.hunter.xie.covaweb.client.COVAWebEntryPoint' />
 
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client' />
