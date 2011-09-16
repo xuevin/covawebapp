@@ -8,6 +8,8 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import edu.cuny.hunter.xie.covaweb.client.presenter.COVAPresenter;
+import gwtupload.client.IUploader;
+import gwtupload.client.MultiUploader;
 
 
 public class COVAView extends Composite implements COVAPresenter.ICOVAView {
@@ -18,12 +20,18 @@ public class COVAView extends Composite implements COVAPresenter.ICOVAView {
   @UiField
   ListBox listBox;
   
+  @UiField
+  MultiUploader multiUploader;
+  
   public COVAView() {
     initWidget(uiBinder.createAndBindUi(this));
   }
   
   public ListBox getListBox() {
     return listBox;
+  }
+  public MultiUploader getMultiUploader(){
+    return multiUploader;
   }
   
 }

@@ -4,7 +4,6 @@
 		Hello,
 		<g:ListBox ui:field='listBox' visibleItemCount='1' />
 		<upload:MultiUploader fileInputSize='40'
-			maximumFiles='1' ui:field='multiUploader' type='BROWSER_INPUT' />
-
+			maximumFiles='1' ui:field='multiUploader' type='LABEL' />
 	</g:HTMLPanel>
 </ui:UiBinder>
