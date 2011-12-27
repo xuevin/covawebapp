@@ -5,13 +5,19 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 
-import edu.cuny.hunter.xie.covaweb.client.presenter.COVAPresenter;
-import edu.cuny.hunter.xie.covaweb.client.view.COVAView;
+import edu.cuny.hunter.xie.covaweb.client.presenter.ConfigPresenter;
+import edu.cuny.hunter.xie.covaweb.client.presenter.DisplayPresenter;
+import edu.cuny.hunter.xie.covaweb.client.view.RootView;
+import edu.cuny.hunter.xie.covaweb.shared.DataObject;
 
-@Events(startView = COVAView.class)
+@Events(startView = RootView.class)
 public interface COVAWebEventBus extends EventBus {
   
   @Start
-  @Event(handlers = {COVAPresenter.class})
+  @Event(handlers = {ConfigPresenter.class})
   public void start();
+  
+  @Event(handlers = {DisplayPresenter.class})
+  public void dataLoaded(DataObject object);
+  
 }

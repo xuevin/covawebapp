@@ -13,6 +13,9 @@
 	<!-- Other module inherits                                      -->
 	<inherits name='com.mvp4g.Mvp4gModule' />
 	<inherits name="gwtupload.GWTUpload" />
+	<inherits name="com.google.gwt.logging.Logging" />
+	<set-property name="gwt.logging.enabled" value="TRUE" />            <!--To disable logging  -->
+	<set-property name="gwt.logging.popupHandler" value="DISABLED" />  <!-- To disable popup -->
 
 
 	<!--

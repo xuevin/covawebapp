@@ -1,0 +1,30 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+	xmlns:covaView='urn:import:edu.cuny.hunter.xie.covaweb.client.view'>
+	<!--	<g:HTMLPanel>-->
+	<!--	Foo-->
+	<!--	<covaView:ConfigView ui:field='configView' />-->
+	<!--	</g:HTMLPanel>-->
+	<g:DockLayoutPanel unit='EM' height="1000px">
+		<g:north size='2'>
+			<g:HTMLPanel>
+				Foo
+			</g:HTMLPanel>
+		</g:north>
+		
+		<g:west size = '60'>
+			<covaView:ConfigView ui:field='configView' />
+		</g:west>
+		
+		<g:center>
+			<covaView:DisplayView ui:field='displayView' />
+		</g:center>
+	</g:DockLayoutPanel>
+
+	<!--	xmlns:c='urn:import:com.google.gwt.user.cellview.client'-->
+	<!--	<g:HTMLPanel>-->
+	<!--		Hello,-->
+	<!--		<g:ListBox ui:field='listBox' visibleItemCount='1' />-->
+	<!--		<c:CellTable ui:field="table" width='100%' />-->
+	<!--	</g:HTMLPanel>-->
+</ui:UiBinder>

@@ -1,6 +1,6 @@
 package edu.cuny.hunter.xie.covaweb.server;
 
-import edu.cuny.hunter.xie.covaweb.client.GreetingService;
+import edu.cuny.hunter.xie.covaweb.client.service.GreetingService;
 import edu.cuny.hunter.xie.covaweb.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 

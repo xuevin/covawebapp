@@ -1,0 +1,12 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:upload='urn:import:gwtupload.client'
+	xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
+
+	<g:FlowPanel width="400px">
+		<g:FlowPanel>
+			<g:Label text="This is the Display View - All Results Go Here" />
+			<g:Label text="This is the Display View - All Results Go Here" ui:field="mainTextLabel"/>
+		</g:FlowPanel>
+	</g:FlowPanel>
+	
+</ui:UiBinder>

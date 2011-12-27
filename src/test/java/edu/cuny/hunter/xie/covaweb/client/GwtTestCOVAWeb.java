@@ -1,5 +1,6 @@
 package edu.cuny.hunter.xie.covaweb.client;
 
+import edu.cuny.hunter.xie.covaweb.client.service.GreetingService;
 import edu.cuny.hunter.xie.covaweb.shared.FieldVerifier;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
