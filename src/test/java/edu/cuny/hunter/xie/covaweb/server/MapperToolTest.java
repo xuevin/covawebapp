@@ -18,6 +18,7 @@ import com.google.common.io.Files;
 
 import edu.cuny.hunter.xie.covaweb.server.local.RunHMMER;
 import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
+import edu.cuny.hunter.xie.covaweb.server.parsers.PDBParser;
 
 public class MapperToolTest {
   
@@ -40,7 +41,7 @@ public class MapperToolTest {
     ProteinSequence sequence = FastaParser.getProteinSequenceFromFasta(string);
     File pdbFile = new File(getClass().getClassLoader().getResource(
         "NP_001096969.pdb").getPath());
-    Structure protein = PipelineServiceImpl.getStructureFromPDBFile(pdbFile);
+    Structure protein = PDBParser.getStructureFromPDBFile(pdbFile);
     
     SequencePair<ProteinSequence,AminoAcidCompound> queryTo_PDB_Pair = PipelineServiceImpl
         .alignPDBSequenceToQuery(sequence, protein);

@@ -28,31 +28,43 @@ public class Pipeline {
         .getProteinSequenceFromFasta(queryAminoAcidSequenceFastaFile);
   }
   
-  public Pipeline(String queryAminoAcidSequence) throws PipelineException {
-    this.queryProteinSequence = new ProteinSequence(queryAminoAcidSequence
-        .toUpperCase());
+  public Pipeline(String queryAminoAcidSequenceString) throws PipelineException {
+    this.queryProteinSequence = new ProteinSequence(
+        queryAminoAcidSequenceString.toUpperCase());
   }
   
   public boolean run() throws PipelineException {
     try {
       // Step 0 Verify what files you have access to.
       if (queryProteinSequence == null) {
-        return false;
+        return false; // Can't continue without access to a query sequence
+      } else if (allignment != null && pdb != null) {
+        return runPipelineAllProvided(); // run pipeline where all information is provided
       }
       
-      // Step 1 Query the PFAM service to get the pfamObj
-      PfamServiceObject pfamObj = PfamService
-          .getPfamServiceObj(queryProteinSequence);
-      System.out.println(pfamObj.getHmm());
-      
-      // Step 2 Download all the SEED alignments
-      
-      return true;
+      // Run full pipeline
+      return runPipelineFull();
     } catch (IOException e) {
       throw new PipelineException("Unexpected IO exception", e);
     } catch (IllegalArgumentException e) {
       throw new PipelineException("Unexpected Parsing exception", e);
     }
+  }
+  
+  public boolean runPipelineFull() throws IllegalArgumentException, IOException {
+    // TODO
+    // Step 1 Query the PFAM service to get the pfamObj
+    PfamServiceObject pfamObj = PfamService
+        .getPfamServiceObj(queryProteinSequence);
+    System.out.println(pfamObj.getHmm());
     
+    // Step 2 Download all the SEED alignments
+    
+    return false;
+  }
+  
+  public boolean runPipelineAllProvided() {
+    // TODO
+    return false;
   }
 }

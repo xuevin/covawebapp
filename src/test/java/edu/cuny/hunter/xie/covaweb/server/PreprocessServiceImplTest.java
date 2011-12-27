@@ -16,6 +16,8 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
+import edu.cuny.hunter.xie.covaweb.server.parsers.MSAParser;
+import edu.cuny.hunter.xie.covaweb.server.parsers.PDBParser;
 
 public class PreprocessServiceImplTest {
   
@@ -24,7 +26,7 @@ public class PreprocessServiceImplTest {
     String alignment = Files.toString(new File(getClass().getClassLoader()
         .getResource("pnase.txt").getPath()), Charsets.UTF_8);
     
-    MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = PipelineServiceImpl
+    MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = MSAParser
         .getMSA(alignment);
     
     System.out.println(msa.getAlignedSequence(2).getSequenceAsString());
@@ -46,7 +48,7 @@ public class PreprocessServiceImplTest {
   public void showThatGetStructureFromPDBFileWorks() throws IOException {
     File pdbFile = new File(getClass().getClassLoader().getResource(
         "NP_001096969.pdb").getPath());
-    Structure protein = PipelineServiceImpl.getStructureFromPDBFile(pdbFile);
+    Structure protein = PDBParser.getStructureFromPDBFile(pdbFile);
     // This test just makes sure that no aa is lost.
     // It is not a very robust test
     assertEquals(288, protein.getChain(0).getAtomLength());
@@ -61,7 +63,7 @@ public class PreprocessServiceImplTest {
     
     File pdbFile = new File(getClass().getClassLoader().getResource(
         "NP_001096969.pdb").getPath());
-    Structure protein = PipelineServiceImpl.getStructureFromPDBFile(pdbFile);
+    Structure protein = PDBParser.getStructureFromPDBFile(pdbFile);
     
     PipelineServiceImpl.alignPDBSequenceToQuery(sequence, protein);
   }

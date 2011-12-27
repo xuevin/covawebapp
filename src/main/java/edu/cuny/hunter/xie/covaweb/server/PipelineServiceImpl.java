@@ -42,45 +42,6 @@ public class PipelineServiceImpl extends RemoteServiceServlet implements
   }
   
   /**
-   * Parses a simple interleaved alignment file into a MultipleSequenceAlignment
-   * 
-   * @param string
-   *          a string version of the MSA
-   * @return a MultipleSequensceAlignment
-   */
-  public static MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> getMSA(
-      String string) {
-    MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = new MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound>();
-    
-    StringTokenizer tokenizer = new StringTokenizer(string);
-    while (tokenizer.hasMoreTokens()) {
-      String identifier = tokenizer.nextToken();
-      ProteinSequence sequence = new ProteinSequence(tokenizer.nextToken()
-          .toUpperCase());
-      sequence.setOriginalHeader(identifier);
-      sequence.setAccession(new AccessionID(identifier));
-      msa.addAlignedSequence(sequence);
-    }
-    return msa;
-    
-  }
-  
-  public static Structure getStructureFromPDB(String string) throws IOException {
-    // Write the PDB string to file
-    
-    File temp = File.createTempFile("covawebapp", "tmp");
-    Files.write(string, temp, Charsets.UTF_8);
-    
-    // Read the Structure from the file
-    return getStructureFromPDBFile(temp);
-  }
-  
-  public static Structure getStructureFromPDBFile(File file) throws IOException {
-    PDBFileReader reader = new PDBFileReader();
-    return reader.getStructure(file);
-  }
-  
-  /**
    * Aligns a protein sequence to the query sequence.
    * 
    * @param query
