@@ -6,6 +6,8 @@ import org.biojava3.core.sequence.AccessionID;
 import org.biojava3.core.sequence.MultipleSequenceAlignment;
 import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.compound.AminoAcidCompound;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MSAParser {
   /**
@@ -15,8 +17,13 @@ public class MSAParser {
    *          a string version of the MSA
    * @return a MultipleSequensceAlignment
    */
+  
+  static Logger logger = LoggerFactory.getLogger(MSAParser.class);
+
   public static MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> getMSA(
       String string) {
+    logger.debug("Parsing Multiple Sequence Alignment from a String");
+    
     MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = new MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound>();
     
     StringTokenizer tokenizer = new StringTokenizer(string);
