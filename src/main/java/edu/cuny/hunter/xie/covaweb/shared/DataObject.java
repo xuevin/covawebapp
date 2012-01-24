@@ -19,9 +19,9 @@ public class DataObject implements Serializable{
   }
   
   public DataObject(String queryString, String pdbString, String msaString) {
-    this.setMsaString(msaString);
-    this.setPdbString(pdbString);
-    this.setMsaString(msaString);
+    setMsaString(msaString);
+    setPdbString(pdbString);
+    setQueryString(queryString);
   }
 
   public void setMsaString(String msaString) {
