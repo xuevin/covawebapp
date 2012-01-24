@@ -3,6 +3,8 @@ package edu.cuny.hunter.xie.covaweb.server;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 import org.biojava3.core.sequence.ProteinSequence;
 import org.junit.Test;
@@ -57,6 +59,7 @@ public class PfamServicesTest {
   
   @Test
   public void testGetUnallignedSeq() throws IOException{
-    PfamService.getListOfSeedSequences("IPK");
+    LinkedHashMap<String,String> unalignedSeeds = PfamService.getListOfSeedSequences("IPK");
+    assertEquals(112, unalignedSeeds.size()); //For this accession there are 112 sequences
   }
 }

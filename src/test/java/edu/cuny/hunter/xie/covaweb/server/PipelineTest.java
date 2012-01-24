@@ -2,17 +2,22 @@ package edu.cuny.hunter.xie.covaweb.server;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.biojava3.core.sequence.ProteinSequence;
 import org.junit.Test;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
 import edu.cuny.hunter.xie.covaweb.shared.exceptions.PipelineException;
 
 public class PipelineTest {
   @Test
-  public void showThatPipelineWorks() throws PipelineException {
+  public void showThatPartialInputPipelineWorks() throws PipelineException {
     Pipeline foo = new Pipeline(
-        ">Sequence\n" +
         "MAGAASPCANGCGPSAPSDAEVVHLCRSLEVGTVMTLFYSKKSQRPERKTFQVKLETRQI"
             + "TWSRGADKIEGAIDIREIKEIRPGKTSRDFDRYQEDPAFRPDQSHCFVILYGMEFRLKTL"
             + "SLQATSEDVNMWIRGLTWLMEDTLQAATPLQIERWLRKQFYSVDRNREDRISAKDLKNM"
@@ -24,7 +29,7 @@ public class PipelineTest {
             + "YSENDISNSIKNGILYLEDPVNHEWYPHYFVLTSSKIYYSEETSSDQGNEDEEEPKEASG"
             + "STELHSNEKWFHGKLGAGRDGRHIAERLLTEYCIETGAPDGSFLVRESETFVGDYTLSFW"
             + "RNGKVQHCRIHSRQDAGTPKFFLTDNLVFDSLYDLITHYQQVPLRCNEFEMRLSEPVPQT"
-            + "NAHESKEWYHASLTRAQAEHMLMRVPRDGAFLVRKRNEPNSYAISFRAEGKIKHCRVQQE"
+            + "NAHESKEWYHASLTRAQAEHMLMRVPRDGAFLVRKRNEPNSYAISFRAEGKIKHCtRVQQE"
             + "GQTVMLGNSEFDSLVDLISYYEKHPLYRKMKLRYPINEEALEKIGTAEPDYGALYEGRNP"
             + "GFYVEANPMPTFKCAVKALFDYKAQREDELTFTKSAIIQNVEKQEGGWWRGDYGGKKQLW"
             + "FPSNYVEEMVSPAALEPEREHLDENSPLGDLLRGVLDVPACQIAVRPEGKNNRLFVFSIS"
@@ -36,6 +41,15 @@ public class PipelineTest {
             + "ELASLLVKIDVFPAKQENGDLSPFGGASLRERSCDASGPLFHGRAREGSFEARYQQPFED"
             + "FRISQEHLADHFDGRDRRTPRRTRVNGDNRL");
     foo.run();
-    
+  }
+  
+  @Test
+  public void showThatFullInputPipelineWorks() throws PipelineException,
+      IOException {
+    Pipeline foo = new Pipeline(
+        Files.toString(new File(this.getClass().getClassLoader().getResource("NP_001096969.fa").getFile()),Charsets.UTF_8), 
+        Files.toString(new File(this.getClass().getClassLoader().getResource("PF03770_seed_wQuery.sto").getFile()),Charsets.UTF_8), 
+        Files.toString(new File(this.getClass().getClassLoader().getResource("NP_001096969.pdb").getFile()),Charsets.UTF_8));
+    foo.run();
   }
 }

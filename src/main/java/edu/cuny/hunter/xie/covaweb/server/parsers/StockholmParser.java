@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 
+import org.biojava3.core.sequence.AccessionID;
 import org.biojava3.core.sequence.MultipleSequenceAlignment;
 import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.compound.AminoAcidCompound;
@@ -28,11 +29,13 @@ public class StockholmParser {
     logger.debug("Creating MSA from an InputStream");
     
     LinkedHashMap<String,String> labelToSequence = getSequencesAsLinkedHashMap(stream);
+    //TODO slightly inefficient considering that the list is looped through twice
     
     MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = new MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound>();
     for (String key : labelToSequence.keySet()) {
-      msa.addAlignedSequence(new ProteinSequence(labelToSequence.get(key)
-          .toUpperCase()));
+      ProteinSequence temp = new ProteinSequence(labelToSequence.get(key).toUpperCase());
+      temp.setAccession(new AccessionID(key));
+      msa.addAlignedSequence(temp);
       //      
       // System.out.println(key + "\t" + labelToSequence.get(key));
     }
@@ -42,6 +45,7 @@ public class StockholmParser {
   
   public static LinkedHashMap<String,String> getSequencesAsLinkedHashMap(
       InputStream stream) throws IOException {
+
     LinkedHashMap<String,String> labelToSequence = new LinkedHashMap<String,String>();
     
     String line;

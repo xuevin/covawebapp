@@ -18,6 +18,7 @@ import com.google.common.io.Files;
 import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.MSAParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.PDBParser;
+import edu.cuny.hunter.xie.covaweb.server.utils.AlignmentUtils;
 
 public class PreprocessServiceImplTest {
   
@@ -65,7 +66,7 @@ public class PreprocessServiceImplTest {
         "NP_001096969.pdb").getPath());
     Structure protein = PDBParser.getStructureFromPDBFile(pdbFile);
     
-    PipelineServiceImpl.alignPDBSequenceToQuery(sequence, protein);
+    AlignmentUtils.alignPDBSequenceToQuery(sequence, protein);
   }
   
 }

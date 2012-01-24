@@ -31,7 +31,6 @@ public class MSAParser {
       String identifier = tokenizer.nextToken();
       ProteinSequence sequence = new ProteinSequence(tokenizer.nextToken()
           .toUpperCase());
-      sequence.setOriginalHeader(identifier);
       sequence.setAccession(new AccessionID(identifier));
       msa.addAlignedSequence(sequence);
     }

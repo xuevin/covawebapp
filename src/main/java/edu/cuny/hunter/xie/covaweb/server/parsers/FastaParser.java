@@ -1,9 +1,7 @@
 package edu.cuny.hunter.xie.covaweb.server.parsers;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.biojava3.core.sequence.ProteinSequence;
