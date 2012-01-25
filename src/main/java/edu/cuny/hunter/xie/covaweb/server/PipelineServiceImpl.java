@@ -16,9 +16,10 @@ public class PipelineServiceImpl extends RemoteServiceServlet implements
   
   @Override
   public String runPipeline(DataObject object) throws PipelineException {
-    Pipeline pipeline = new Pipeline(object.getQueryString());
+    Pipeline pipeline = new Pipeline(object);
     pipeline.run();
-    return "Success";
+    return(pipeline.getResults().toString());
+    
     
   }
 }

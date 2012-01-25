@@ -18,6 +18,7 @@ import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.PDBParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.StockholmParser;
 import edu.cuny.hunter.xie.covaweb.server.utils.AlignmentUtils;
+import edu.cuny.hunter.xie.covaweb.shared.DataObject;
 import edu.cuny.hunter.xie.covaweb.shared.exceptions.PipelineException;
 
 public class Pipeline {
@@ -27,6 +28,18 @@ public class Pipeline {
   private ProteinSequence queryProteinSequence;
   private MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> alignment; //Input alignment must be in Stockholm format
   private Structure pdb;
+
+  private MappedSeq resultMappedSeq;
+  
+  public Pipeline(DataObject dataObject) throws PipelineException{
+    try {
+      this.pdb=PDBParser.getStructureFromPDB(dataObject.getPdbString());
+      this.alignment=StockholmParser.getMSA(new ByteArrayInputStream(dataObject.getMsaString().getBytes()));
+      this.queryProteinSequence = FastaParser.getProteinSequenceFromFasta(dataObject.getQueryString());
+    } catch (IOException e) {
+      throw new PipelineException(e);
+    }
+  }
   
   public Pipeline(File queryAminoAcidSequenceFastaFile)
       throws IllegalArgumentException, IOException {
@@ -84,10 +97,13 @@ public class Pipeline {
   
   private boolean runPipelineAllProvided() {
     logger.info("The pipeline has all the pieces required to continue");
+    resultMappedSeq = new MappedSeq(queryProteinSequence,pdb,alignment);
+    return true;
+    //TODO put a trycatch here
     
-    MappedSeq mappedSeq = new MappedSeq(queryProteinSequence,pdb,alignment);
-    
-    
-    return false;
+  }
+
+  public MappedSeq getResults() {
+    return resultMappedSeq;
   }
 }
