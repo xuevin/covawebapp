@@ -4,8 +4,11 @@
 
 	<g:FlowPanel width="400px">
 		<g:FlowPanel>
-			<g:Label text="This is the Display View - All Results Go Here" />
+			<g:Label text="Results go Below" />
 			<g:Label text="This is the Display View - All Results Go Here" ui:field="mainTextLabel"/>
+			<g:ScrollPanel height="400px">
+				<g:HTML text="This is the Display HTML" ui:field="mainTextHTML"/>
+			</g:ScrollPanel>
 		</g:FlowPanel>
 	</g:FlowPanel>
 	

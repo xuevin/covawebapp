@@ -3,6 +3,7 @@ package edu.cuny.hunter.xie.covaweb.client.presenter;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
@@ -24,6 +25,7 @@ public class DisplayPresenter extends
   
   public interface IDisplayView {
     public Label getMainTextLabel();
+    public HTML getMainTextHTML();
   }
   
   public void onStart() {
@@ -35,7 +37,7 @@ public class DisplayPresenter extends
       
       @Override
       public void onSuccess(String result) {
-        view.getMainTextLabel().setText(result);
+        view.getMainTextHTML().setHTML(result.replace("\n", "<br>"));
       }
       
       @Override
