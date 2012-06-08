@@ -22,9 +22,9 @@ public class RootView extends Composite implements RootPresenter.IRootView {
   DisplayView displayView;
   
   @Inject
-  public RootView(ConfigView configView,DisplayView displayView) {
+  public RootView(ConfigView configView, DisplayView displayView) {
     this.configView = configView;
-    this.displayView=displayView;
+    this.displayView = displayView;
     initWidget(uiBinder.createAndBindUi(this));
   }
 }

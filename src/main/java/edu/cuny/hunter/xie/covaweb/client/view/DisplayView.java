@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import edu.cuny.hunter.xie.covaweb.client.presenter.DisplayPresenter;
@@ -24,8 +25,12 @@ public class DisplayView extends Composite implements
   Label mainTextLabel;
   @UiField 
   HTML mainTextHTML;
+  @UiField(provided = true)
+  ProteinView proteinView;
   
-  public DisplayView() {
+  @Inject
+  public DisplayView(ProteinView proteinView) {
+    this.proteinView=proteinView;
     initWidget(uiBinder.createAndBindUi(this));
   }
 

@@ -20,6 +20,7 @@ public class DisplayPresenter extends
   
   @Inject
   private PipelineServiceAsync preprocessService;
+  
   private Logger logger = Logger.getLogger(getClass().toString());
   
   
