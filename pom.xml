@@ -110,9 +110,9 @@
 			<version>1.6.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.gwtgl</groupId>
-			<artifactId>gwtgl</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<groupId>info.vincentxue</groupId>
+			<artifactId>gwtglprotein</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

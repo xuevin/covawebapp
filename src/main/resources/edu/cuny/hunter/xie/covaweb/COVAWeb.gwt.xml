@@ -16,7 +16,9 @@
 	<inherits name="com.google.gwt.logging.Logging" />
 	<set-property name="gwt.logging.enabled" value="TRUE" />            <!--To disable logging  -->
 	<set-property name="gwt.logging.popupHandler" value="DISABLED" />  <!-- To disable popup -->
-	<inherits name='com.googlecode.gwtgl.binding' />
+	<inherits name='info.vincentxue.gwtglprotein.Gwtglprotein' />
+	<inherits name="com.google.gwt.resources.Resources" />
+	
 
 
 	<!--

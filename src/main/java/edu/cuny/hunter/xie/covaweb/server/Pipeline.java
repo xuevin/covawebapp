@@ -26,16 +26,19 @@ public class Pipeline {
   Logger logger = LoggerFactory.getLogger(this.getClass());
   
   private ProteinSequence queryProteinSequence;
-  private MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> alignment; //Input alignment must be in Stockholm format
+  private MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> alignment;
+  // Input alignment must be in Stockholm format
   private Structure pdb;
-
+  
   private MappedSeq resultMappedSeq;
   
-  public Pipeline(DataObject dataObject) throws PipelineException{
+  public Pipeline(DataObject dataObject) throws PipelineException {
     try {
-      this.pdb=PDBParser.getStructureFromPDB(dataObject.getPdbString());
-      this.alignment=StockholmParser.getMSA(new ByteArrayInputStream(dataObject.getMsaString().getBytes()));
-      this.queryProteinSequence = FastaParser.getProteinSequenceFromFasta(dataObject.getQueryString());
+      this.pdb = PDBParser.getStructureFromPDB(dataObject.getPdbString());
+      this.alignment = StockholmParser.getMSA(new ByteArrayInputStream(
+          dataObject.getMsaString().getBytes()));
+      this.queryProteinSequence = FastaParser
+          .getProteinSequenceFromFasta(dataObject.getQueryString());
     } catch (IOException e) {
       throw new PipelineException(e);
     }
@@ -46,16 +49,21 @@ public class Pipeline {
     this.queryProteinSequence = FastaParser
         .getProteinSequenceFromFasta(queryAminoAcidSequenceFastaFile);
   }
-  public Pipeline(String queryAminoAcideSequenceString, String alignmentInputString, String pdbInputString) throws PipelineException{
+  
+  public Pipeline(String queryAminoAcideSequenceString,
+      String alignmentInputString, String pdbInputString)
+      throws PipelineException {
     try {
-      this.pdb=PDBParser.getStructureFromPDB(pdbInputString);
-      this.alignment=StockholmParser.getMSA(new ByteArrayInputStream(alignmentInputString.getBytes()));
+      this.pdb = PDBParser.getStructureFromPDB(pdbInputString);
+      this.alignment = StockholmParser.getMSA(new ByteArrayInputStream(
+          alignmentInputString.getBytes()));
       this.queryProteinSequence = FastaParser
-      .getProteinSequenceFromFasta(queryAminoAcideSequenceString);
+          .getProteinSequenceFromFasta(queryAminoAcideSequenceString);
     } catch (IOException e) {
       throw new PipelineException(e);
     }
   }
+  
   public Pipeline(String queryAminoAcidSequenceString) throws PipelineException {
     this.queryProteinSequence = new ProteinSequence(
         queryAminoAcidSequenceString.toUpperCase());
@@ -65,7 +73,8 @@ public class Pipeline {
     try {
       // Step 0 Verify what files you have access to.
       if (queryProteinSequence == null) {
-        logger.info("EXITED - Can't continue without access to a query sequence");
+        logger
+            .info("EXITED - Can't continue without access to a query sequence");
         return false; // Can't continue without access to a query sequence
       } else if (alignment != null && pdb != null) {
         return runPipelineAllProvided(); // run pipeline where all information
@@ -73,7 +82,7 @@ public class Pipeline {
       }
       
       // Run full pipeline (Protein and MSA sequences missing)
-      return runPipelineFull();
+      return runAutoPipeline();
     } catch (IOException e) {
       throw new PipelineException("Unexpected IO exception", e);
     } catch (IllegalArgumentException e) {
@@ -81,28 +90,30 @@ public class Pipeline {
     }
   }
   
-  private boolean runPipelineFull() throws IllegalArgumentException,
+  private boolean runAutoPipeline() throws IllegalArgumentException,
       IOException {
+    
+    // Step 1
+    logger.info("Query the PFAM service to get the pfamObj");
     // TODO
-    // Step 1 Query the PFAM service to get the pfamObj
     PfamServiceObject pfamObj = PfamService
         .getPfamServiceObj(queryProteinSequence);
-    logger.debug("The retrieved HMM is {} ",pfamObj.getHmm());
+    logger.debug("The retrieved HMM is {} ", pfamObj.getHmm());
     
     // Step 2 Download all the SEED alignments
-    //PfamService.getListOfSeedSequences(accession);
+    // PfamService.getListOfSeedSequences(accession);
     
     return false;
   }
   
   private boolean runPipelineAllProvided() {
     logger.info("The pipeline has all the pieces required to continue");
-    resultMappedSeq = new MappedSeq(queryProteinSequence,pdb,alignment);
+    resultMappedSeq = new MappedSeq(queryProteinSequence, pdb, alignment);
     return true;
-    //TODO put a trycatch here
+    // TODO put a trycatch here
     
   }
-
+  
   public MappedSeq getResults() {
     return resultMappedSeq;
   }

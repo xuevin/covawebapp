@@ -1,13 +1,10 @@
 package edu.cuny.hunter.xie.covaweb.client.presenter;
 
+import info.vincentxue.gwtglprotein.client.ProteinWidget;
+
 import java.util.logging.Logger;
 
-import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.googlecode.gwtgl.binding.WebGLRenderingContext;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
@@ -22,19 +19,11 @@ public class ProteinPresenter extends BasePresenter<ProteinView,COVAWebEventBus>
   }
   
   Logger logger = Logger.getLogger(getClass().toString());
-  private WebGLRenderingContext glContext;
-  private Canvas webGLCanvas;
   
   public void onStart() {
     
-    webGLCanvas = Canvas.createIfSupported();
-    webGLCanvas.setCoordinateSpaceHeight(500);
-    webGLCanvas.setCoordinateSpaceWidth(500);
-    glContext = (WebGLRenderingContext) webGLCanvas
-        .getContext("experimental-webgl");
-    if (glContext == null) {
-      Window.alert("Sorry, Your Browser doesn't support WebGL!");
-    }
-    view.getHtmlPanel().add(webGLCanvas);
+    ProteinWidget widget = new ProteinWidget();
+    
+    view.getHtmlPanel().add(widget);
   }
 }
