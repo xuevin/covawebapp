@@ -16,6 +16,7 @@ public class PipelineServiceImpl extends RemoteServiceServlet implements
   
   @Override
   public String runPipeline(DataObject object) throws PipelineException {
+    //TODO - be able to handle the data objects with null values.
     Pipeline pipeline = new Pipeline(object);
     pipeline.run();
     return(pipeline.getResults().toString());

@@ -6,13 +6,16 @@ import java.util.logging.Logger;
 import com.google.common.util.concurrent.Service.State;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import edu.cuny.hunter.xie.covaweb.client.COVAWebEventBus;
+import edu.cuny.hunter.xie.covaweb.client.service.PipelineServiceAsync;
 import edu.cuny.hunter.xie.covaweb.client.view.ConfigView;
 import edu.cuny.hunter.xie.covaweb.shared.DataObject;
 import gwtupload.client.IUploader;
@@ -40,14 +43,17 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
   
   Logger logger = Logger.getLogger(getClass().toString());
   
+  @Inject
+  private PipelineServiceAsync preprocessService;
+  
   private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
     
     public void onFinish(IUploader uploader) {
       if (uploader.getStatus() == Status.SUCCESS) {
         UploadedInfo info = uploader.getServerInfo();
-        System.out.println("Good");
+        logger.info("Upload Successful");
       } else {
-        System.out.println("Huh");
+        logger.info("Upload Failed");
       }
     }
   };
@@ -56,6 +62,7 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
     
     @Override
     public void onClick(ClickEvent event) {
+      DataObject dataObject = null;
       
       if (view.getFastaUploader().getStatus() == Status.UNINITIALIZED) {
         logger.info("Loading Files Via Copy/Paste");
@@ -63,24 +70,37 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
         String pdbText = view.getPDBTextArea().getText();
         String msaText = view.getMSATextArea().getText();
         
-        if(fastaText.length()==0){
+        if (fastaText.length() == 0) {
           logger.info("Need query sequence! EXITING");
           view.getResponseLabel().setText("Need query sequence!");
           return;
-        }else{
-          if(pdbText.length()==0 && msaText.length()==0){
-            //Perform the automated pipeline
-            //TODO
-          }else{
-            //Perform the manual pipeline
-            eventBus.dataLoaded(new DataObject(fastaText,pdbText,msaText));
+        } else {
+          if (pdbText.length() == 0 && msaText.length() == 0) {
+            dataObject = new DataObject();
+          } else {
+            dataObject = new DataObject(fastaText, pdbText, msaText);
           }
         }
-
+        
+        AsyncCallback<String> callback = new AsyncCallback<String>() {
+          @Override
+          public void onSuccess(String result) {
+            eventBus.resultsReady(result);
+          }
+          
+          @Override
+          public void onFailure(Throwable caught) {
+            logger.info("RPC failed: " + caught.getMessage());
+            eventBus
+                .resultsReady("RPC failed: " + caught.getLocalizedMessage());
+          }
+        };
+        preprocessService.runPipeline(dataObject, callback);
         
       } else {
         view.getFastaUploader().submit();
       }
+      
     }
     
   };

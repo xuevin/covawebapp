@@ -20,6 +20,6 @@ public interface COVAWebEventBus extends EventBus {
   public void start();
   
   @Event(handlers = {DisplayPresenter.class})
-  public void dataLoaded(DataObject object);
+  public void resultsReady(String string);
   
 }
