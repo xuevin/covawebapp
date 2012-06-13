@@ -3,7 +3,9 @@ package edu.cuny.hunter.xie.covaweb.server.parsers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
+import org.biojava3.core.exceptions.CompoundNotFoundError;
 import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.io.FastaReaderHelper;
 import org.slf4j.Logger;
@@ -20,17 +22,24 @@ public class FastaParser {
     logger.debug("Parsing String-FASTA into ProteinSequence from string");
     
     try {
-      ProteinSequence proteinSeq = FastaReaderHelper.readFastaProteinSequence(
+       LinkedHashMap<String,ProteinSequence> proteinSeqMap = FastaReaderHelper.readFastaProteinSequence(
           new ByteArrayInputStream(string.toUpperCase()
-              .getBytes(Charsets.UTF_8))).values().iterator().next();
+              .getBytes(Charsets.UTF_8)));
+       
+      ProteinSequence proteinSeq = proteinSeqMap.values().iterator().next();
+      
       if (proteinSeq.getLength() == 0) {
         throw new IllegalArgumentException(
             "The length of the parsed string was 0");
       }
       
       return proteinSeq;
-    } catch (Exception e) {
-      throw new IllegalArgumentException(e);
+    }catch (CompoundNotFoundError e){
+      logger.debug("Parsing Failed - Exception thrown");
+      throw new IllegalArgumentException("The designated file is not a valid FASTA");
+    }catch (Exception e){
+      logger.debug("Parsing Failed - Exception thrown");
+      throw new IllegalArgumentException("The designated file is not a valid FASTA");
     }
     
   }

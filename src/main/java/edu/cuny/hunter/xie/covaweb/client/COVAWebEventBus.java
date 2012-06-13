@@ -8,9 +8,7 @@ import com.mvp4g.client.event.EventBus;
 import edu.cuny.hunter.xie.covaweb.client.presenter.ConfigPresenter;
 import edu.cuny.hunter.xie.covaweb.client.presenter.DisplayPresenter;
 import edu.cuny.hunter.xie.covaweb.client.presenter.ProteinPresenter;
-import edu.cuny.hunter.xie.covaweb.client.view.ProteinView;
 import edu.cuny.hunter.xie.covaweb.client.view.RootView;
-import edu.cuny.hunter.xie.covaweb.shared.DataObject;
 
 @Events(startView = RootView.class)
 public interface COVAWebEventBus extends EventBus {
@@ -21,5 +19,8 @@ public interface COVAWebEventBus extends EventBus {
   
   @Event(handlers = {DisplayPresenter.class})
   public void resultsReady(String string);
+  
+  @Event(handlers ={ProteinPresenter.class})
+  public void proteinLoad(String pdbString);
   
 }

@@ -19,11 +19,17 @@ public class ProteinPresenter extends BasePresenter<ProteinView,COVAWebEventBus>
   }
   
   Logger logger = Logger.getLogger(getClass().toString());
+  private ProteinWidget widget;
   
   public void onStart() {
     
-    ProteinWidget widget = new ProteinWidget();
+    widget = new ProteinWidget();
     
     view.getHtmlPanel().add(widget);
+  }
+  
+  public void onProteinLoad(String pdbString){
+    logger.info("Loading pdb file");
+    widget.loadPDBFromString(pdbString);
   }
 }

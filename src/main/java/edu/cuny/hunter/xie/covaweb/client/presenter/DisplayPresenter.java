@@ -2,16 +2,13 @@ package edu.cuny.hunter.xie.covaweb.client.presenter;
 
 import java.util.logging.Logger;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import edu.cuny.hunter.xie.covaweb.client.COVAWebEventBus;
 import edu.cuny.hunter.xie.covaweb.client.view.DisplayView;
-import edu.cuny.hunter.xie.covaweb.shared.DataObject;
 
 @Presenter(view = DisplayView.class)
 public class DisplayPresenter extends

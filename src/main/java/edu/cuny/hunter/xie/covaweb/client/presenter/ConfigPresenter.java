@@ -3,7 +3,6 @@ package edu.cuny.hunter.xie.covaweb.client.presenter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.common.util.concurrent.Service.State;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -81,6 +80,11 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
             dataObject = new DataObject(fastaText, pdbText, msaText);
           }
         }
+        
+        if(pdbText!=null){
+          eventBus.proteinLoad(pdbText);
+        }
+        
         
         AsyncCallback<String> callback = new AsyncCallback<String>() {
           @Override

@@ -37,4 +37,13 @@ public class FastaParserTest {
             + "nlidifvelqasmeaeahaqaqaeaiqspvsgsggdqaeqtgeeskp").toUpperCase());
   }
   
+  @Test(expected=IllegalArgumentException.class)
+  public void showThatFastaFileParserThrowsCorrectError() throws IllegalArgumentException, IOException{
+    
+    ProteinSequence temp = FastaParser.getProteinSequenceFromFasta(new File(
+        getClass().getClassLoader().getResource("NP_001096969.fa.trash").getFile()));
+    
+    
+  }
+  
 }

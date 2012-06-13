@@ -53,8 +53,8 @@ public class AlnUpload extends UploadAction {
            * Do some custom things here
            */
           
-          //Pipeline foo = new Pipeline(file);
-          //ExecuteCOVA.getXML(file);
+          Pipeline foo = new Pipeline(file);
+          ExecuteCOVA.getXML(file);
           
           
           
