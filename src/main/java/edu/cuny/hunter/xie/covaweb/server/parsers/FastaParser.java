@@ -32,7 +32,7 @@ public class FastaParser {
         throw new IllegalArgumentException(
             "The length of the parsed string was 0");
       }
-      
+      logger.debug("Parsing success");
       return proteinSeq;
     }catch (CompoundNotFoundError e){
       logger.debug("Parsing Failed - Exception thrown");
