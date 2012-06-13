@@ -16,7 +16,7 @@ import static gwtupload.shared.UConsts.PARAM_SHOW;
 import gwtupload.server.UploadAction;
 import gwtupload.server.exceptions.UploadActionException;
 
-public class AlnUpload extends UploadAction {
+public class FastaUpload extends UploadAction {
   private static final long serialVersionUID = 1L;
   
   Hashtable<String,String> receivedContentTypes = new Hashtable<String,String>();

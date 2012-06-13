@@ -22,7 +22,7 @@
 	<!-- Servlets -->
 	<servlet>
 		<servlet-name>uploadServlet</servlet-name>
-		<servlet-class>edu.cuny.hunter.xie.covaweb.server.AlnUpload</servlet-class>
+		<servlet-class>edu.cuny.hunter.xie.covaweb.server.FastaUpload</servlet-class>
 	</servlet><servlet>
 		<servlet-name>pipelineServlet</servlet-name>
 		<servlet-class>edu.cuny.hunter.xie.covaweb.server.PipelineServiceImpl</servlet-class>

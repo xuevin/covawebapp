@@ -57,10 +57,11 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
     }
   };
   
-  private ClickHandler fastaSubmitHandeler = new ClickHandler() {
+  private ClickHandler submitButtonHandeler = new ClickHandler() {
     
     @Override
     public void onClick(ClickEvent event) {
+      //The object that is sent to the server
       DataObject dataObject = null;
       
       if (view.getFastaUploader().getStatus() == Status.UNINITIALIZED) {
@@ -110,7 +111,7 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
   };
   
   public void onStart() {
-    view.getFastaSubmitButton().addClickHandler(fastaSubmitHandeler);
+    view.getFastaSubmitButton().addClickHandler(submitButtonHandeler);
     view.getFastaUploader().addOnFinishUploadHandler(onFinishUploaderHandler);
     
   }
