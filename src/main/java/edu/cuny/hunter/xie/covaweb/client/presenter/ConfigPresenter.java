@@ -47,9 +47,10 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
   
   private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
     
-    public void onFinish(IUploader uploader) {
-      if (uploader.getStatus() == Status.SUCCESS) {
-        UploadedInfo info = uploader.getServerInfo();
+    public void onFinish(IUploader fastaUploader) {
+      if (fastaUploader.getStatus() == Status.SUCCESS) {
+        UploadedInfo info = fastaUploader.getServerInfo();
+        view.getFastaTextArea().setText(info.message);
         logger.info("Upload Successful");
       } else {
         logger.info("Upload Failed");

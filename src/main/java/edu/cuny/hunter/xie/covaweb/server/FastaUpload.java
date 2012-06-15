@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
+import org.biojava3.core.sequence.ProteinSequence;
+
+import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
 
 
 import static gwtupload.shared.UConsts.PARAM_SHOW;
@@ -46,16 +49,20 @@ public class FastaUpload extends UploadAction {
           receivedFiles.put(item.getFieldName(), file);
           receivedContentTypes.put(item.getFieldName(), item.getContentType());
           
-          // / Send a customized message to the client.
-          response += "File saved as " + file.getAbsolutePath();
+          // Verify that the fasta is valid and then send the sequence to the client.#
+          ProteinSequence sequence = FastaParser.getProteinSequenceFromFasta(file);
+          response+=">";
+          response+=sequence.getAccession();
+          response+="\n";
+          response+= sequence.toString();
+          
+          //response += "File saved as " + file.getAbsolutePath();
           
           /*
            * Do some custom things here
            */
-          
-          Pipeline foo = new Pipeline(file);
-          ExecuteCOVA.getXML(file);
-          
+          // Pipeline foo = new Pipeline(file);
+          // ExecuteCOVA.getXML(file);          
           
           
         } catch (Exception e) {
