@@ -5,6 +5,9 @@ import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
@@ -28,13 +31,17 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
   public interface IConfigView {
     public MultiUploader getFastaUploader();
     
+    public MultiUploader getPDBUploader();
+    
+    public MultiUploader getMSAUploader();
+    
     public TextArea getFastaTextArea();
     
     public TextArea getMSATextArea();
     
     public TextArea getPDBTextArea();
     
-    public Button getFastaSubmitButton();
+    public Button getSubmitButton();
     
     public Label getResponseLabel();
     
@@ -50,7 +57,19 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
     public void onFinish(IUploader fastaUploader) {
       if (fastaUploader.getStatus() == Status.SUCCESS) {
         UploadedInfo info = fastaUploader.getServerInfo();
-        view.getFastaTextArea().setText(info.message);
+        JSONObject jsonObj = JSONParser.parseStrict(info.message).isObject();
+        
+        String type = jsonObj.get("type").isString().stringValue();
+        String value = jsonObj.get("value").isString().stringValue();
+        
+        if (type.equals("fasta")) {
+          view.getFastaTextArea().setText(value);
+        } else if (type.equals("pdb")) {
+          view.getPDBTextArea().setText(value);
+        } else if (type.equals("msa")) {
+          view.getMSATextArea().setText(value);
+        }
+        
         logger.info("Upload Successful");
       } else {
         logger.info("Upload Failed");
@@ -62,7 +81,7 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
     
     @Override
     public void onClick(ClickEvent event) {
-      //The object that is sent to the server
+      // The object that is sent to the server
       DataObject dataObject = null;
       
       if (view.getFastaUploader().getStatus() == Status.UNINITIALIZED) {
@@ -83,10 +102,9 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
           }
         }
         
-        if(pdbText!=null){
+        if (pdbText != null) {
           eventBus.proteinLoad(pdbText);
         }
-        
         
         AsyncCallback<String> callback = new AsyncCallback<String>() {
           @Override
@@ -112,8 +130,16 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
   };
   
   public void onStart() {
-    view.getFastaSubmitButton().addClickHandler(submitButtonHandeler);
+    view.getSubmitButton().addClickHandler(submitButtonHandeler);
+    
+    view.getFastaUploader().setServletPath(view.getFastaUploader().getServletPath() + "?fileType=fasta");
     view.getFastaUploader().addOnFinishUploadHandler(onFinishUploaderHandler);
+    
+    view.getMSAUploader().setServletPath(view.getMSAUploader().getServletPath() + "?fileType=msa");
+    view.getMSAUploader().addOnFinishUploadHandler(onFinishUploaderHandler);
+    
+    view.getPDBUploader().setServletPath(view.getPDBUploader().getServletPath() + "?fileType=pdb");
+    view.getPDBUploader().addOnFinishUploadHandler(onFinishUploaderHandler);
     
   }
 }

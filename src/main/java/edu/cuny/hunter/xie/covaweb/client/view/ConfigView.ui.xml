@@ -7,11 +7,28 @@
 			float: right;
 		}
 		
-		.left {
+		.leftFasta {
 			float: left;
 			position: relative;
 			top: -14px;
 			left: 135px;
+		}
+		.leftMSA {
+			float: left;
+			position: relative;
+			top: -14px;
+			left: 240px;
+		}
+		.leftPDB {
+			float: left;
+			position: relative;
+			top: -14px;
+			left: 155px;
+		}
+		.msaTextArea {
+			overflow: auto;
+			white-space: nowrap;
+			
 		}
 	</ui:style>
 
@@ -19,21 +36,25 @@
 		<g:FlowPanel>
 			<g:Label text="Paste in FASTA file or" />
 			<upload:MultiUploader fileInputSize='40'
-				maximumFiles='1' ui:field='fastaUploader' type='ANCHOR'
-				styleName='{style.left}' />
+				maximumFiles='1' ui:field='fastaUploader' type='ANCHOR' styleName='{style.leftFasta}' />
 			<g:TextArea ui:field="fastaTextArea" width="400px" height="150px" />
 		</g:FlowPanel>
 		<g:DisclosurePanel>
 			<g:header>Advanced</g:header>
 			<g:FlowPanel>
-				<g:Label text="Paste in Multiple Sequence Alignment." />
-				<g:TextArea ui:field="msaTextArea" height="150px" width="380px" />
-				<g:Label text="Paste in PDB Structure." />
+				<g:Label text="Paste in Multiple Sequence Alignment or " />
+				<upload:MultiUploader fileInputSize='40'
+					maximumFiles='1' ui:field='msaUploader' type='ANCHOR' styleName='{style.leftMSA}' />
+				<g:TextArea ui:field="msaTextArea" height="150px" width="380px" styleName='{style.msaTextArea}'/>
+				<g:Label text="Paste in PDB Structure or " />
+				<upload:MultiUploader fileInputSize='40'
+					maximumFiles='1' ui:field='pdbUploader' type='ANCHOR' styleName='{style.leftPDB}' />
 				<g:TextArea ui:field="pdbTextArea" height="150px" width="380px" />
 			</g:FlowPanel>
 		</g:DisclosurePanel>
-		<g:Button ui:field="fastaSubmitButton" text="Submit" styleName="{style.right}"/>
-		<g:Label text="" ui:field="responseLabel"/>
+		<g:Button ui:field="fastaSubmitButton" text="Submit"
+			styleName="{style.right}" />
+		<g:Label text="" ui:field="responseLabel" />
 	</g:FlowPanel>
-	
+
 </ui:UiBinder>

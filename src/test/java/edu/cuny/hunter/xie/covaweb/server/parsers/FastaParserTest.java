@@ -1,4 +1,4 @@
-package edu.cuny.hunter.xie.covaweb.server;
+package edu.cuny.hunter.xie.covaweb.server.parsers;
 
 import static org.junit.Assert.assertEquals;
 

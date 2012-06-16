@@ -9,17 +9,25 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.fileupload.FileItem;
+import org.biojava.bio.structure.Structure;
+import org.biojava.bio.structure.io.PDBFileParser;
+import org.biojava3.alignment.template.Profile.StringFormat;
+import org.biojava3.core.sequence.MultipleSequenceAlignment;
 import org.biojava3.core.sequence.ProteinSequence;
+import org.biojava3.core.sequence.compound.AminoAcidCompound;
 
 import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
-
+import edu.cuny.hunter.xie.covaweb.server.parsers.MSAParser;
+import edu.cuny.hunter.xie.covaweb.server.parsers.PDBParser;
 
 import static gwtupload.shared.UConsts.PARAM_SHOW;
 import gwtupload.server.UploadAction;
 import gwtupload.server.exceptions.UploadActionException;
 
-public class FastaUpload extends UploadAction {
+public class FileUploader extends UploadAction {
   private static final long serialVersionUID = 1L;
   
   Hashtable<String,String> receivedContentTypes = new Hashtable<String,String>();
@@ -36,6 +44,7 @@ public class FastaUpload extends UploadAction {
   public String executeAction(HttpServletRequest request,
       List<FileItem> sessionFiles) throws UploadActionException {
     String response = "";
+    JSONObject holder = new JSONObject();
     int cont = 0;
     for (FileItem item : sessionFiles) {
       if (false == item.isFormField()) {
@@ -49,12 +58,37 @@ public class FastaUpload extends UploadAction {
           receivedFiles.put(item.getFieldName(), file);
           receivedContentTypes.put(item.getFieldName(), item.getContentType());
           
-          // Verify that the fasta is valid and then send the sequence to the client.#
-          ProteinSequence sequence = FastaParser.getProteinSequenceFromFasta(file);
-          response+=">";
-          response+=sequence.getAccession();
-          response+="\n";
-          response+= sequence.toString();
+          
+          
+          String fileType = request.getParameter("fileType");
+          logger.info(fileType);
+          //Attempt to parse file as fasta
+          //If it is valid then send the sequence to the client
+          if(fileType.equals("fasta")){
+            ProteinSequence sequence = FastaParser.getProteinSequenceFromFasta(file);
+            response+=">";
+            response+=sequence.getAccession();
+            response+="\n";
+            response+= sequence.toString();
+            
+            //Wrap response in a JSON object
+            holder.put("type","fasta");
+            holder.put("value", response);
+            
+          }else if (fileType.equals("pdb")){
+            Structure structure = PDBParser.getStructureFromPDBFile(file);
+            
+            holder.put("type", "pdb");
+            holder.put("value",structure.toPDB());
+            
+          }else if (fileType.equals("msa")){
+            //TODO - This only takes in interleaved alignments now. I think it should be able to read more.
+            MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = MSAParser.getMSA(file);
+            
+            holder.put("type", "msa");
+            holder.put("value", msa.toString());
+          }
+
           
           //response += "File saved as " + file.getAbsolutePath();
           
@@ -74,8 +108,10 @@ public class FastaUpload extends UploadAction {
     // / Remove files from session because we have a copy of them
     removeSessionFileItems(request);
     
-    // / Send your customized message to the client.
-    return response;
+    //Send a JSON object to the client.
+    //type - <fasta, msa, pdb>
+    //value - <string>
+    return holder.toString();
   }
   
   /**

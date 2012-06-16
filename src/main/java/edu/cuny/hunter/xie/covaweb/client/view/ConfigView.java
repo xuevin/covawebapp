@@ -23,6 +23,10 @@ public class ConfigView extends Composite implements
   @UiField
   MultiUploader fastaUploader;
   @UiField
+  MultiUploader msaUploader;
+  @UiField
+  MultiUploader pdbUploader;
+  @UiField
   TextArea fastaTextArea;
   @UiField
   TextArea msaTextArea;
@@ -48,7 +52,7 @@ public class ConfigView extends Composite implements
   }
   
   @Override
-  public Button getFastaSubmitButton() {
+  public Button getSubmitButton() {
     return fastaSubmitButton;
   }
   
@@ -65,5 +69,15 @@ public class ConfigView extends Composite implements
   @Override
   public Label getResponseLabel() {
     return responseLabel;
+  }
+  
+  @Override
+  public MultiUploader getPDBUploader() {
+    return pdbUploader;
+  }
+  
+  @Override
+  public MultiUploader getMSAUploader() {
+    return msaUploader;
   }
 }

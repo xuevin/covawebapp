@@ -22,28 +22,6 @@ import edu.cuny.hunter.xie.covaweb.server.utils.AlignmentUtils;
 
 public class PreprocessServiceImplTest {
   
-  @Test
-  public void showThatGetMSAWorks() throws IOException {
-    String alignment = Files.toString(new File(getClass().getClassLoader()
-        .getResource("pnase.txt").getPath()), Charsets.UTF_8);
-    
-    MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = MSAParser
-        .getMSA(alignment);
-    
-    System.out.println(msa.getAlignedSequence(2).getSequenceAsString());
-    
-    StringTokenizer original = new StringTokenizer(alignment);
-    StringTokenizer fromBioJava = new StringTokenizer(msa.toString());
-    
-    int i = 1;
-    while (original.hasMoreTokens()) {
-      String seq = original.nextToken().toUpperCase();
-      if (i % 2 == 0) {
-        assertEquals(seq, fromBioJava.nextToken());
-      }
-      i++;
-    }
-  }
   
   @Test
   public void showThatGetStructureFromPDBFileWorks() throws IOException {
