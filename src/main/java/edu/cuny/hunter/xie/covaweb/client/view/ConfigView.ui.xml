@@ -30,9 +30,12 @@
 			white-space: nowrap;
 			
 		}
+		.leftPadding {
+			margin-left: 50px;
+		}
 	</ui:style>
 
-	<g:FlowPanel width="400px">
+	<g:FlowPanel width="400px" styleName='{style.leftPadding}'>
 		<g:FlowPanel>
 			<g:Label text="Paste in FASTA file or" />
 			<upload:MultiUploader fileInputSize='40'

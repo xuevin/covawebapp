@@ -35,7 +35,12 @@ public class PDBParser {
   public static Structure getStructureFromPDBFile(File file) throws IOException {
     logger.debug("Parsing PDB into Structure from file");
     PDBFileReader reader = new PDBFileReader();
-    return reader.getStructure(file);
+    Structure structure = reader.getStructure(file);
+    if(structure.toPDB().length()==0){
+      logger.debug("Parsing PDB failed");
+      throw new IllegalArgumentException("Invalid PDB file used");
+    }
+    return structure;
     
   }
 }

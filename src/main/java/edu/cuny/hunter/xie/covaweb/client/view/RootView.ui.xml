@@ -8,11 +8,11 @@
 	<g:DockLayoutPanel unit='EM' height="1000px">
 		<g:north size='2'>
 			<g:HTMLPanel>
-				Foo
+				Root Panel North Side
 			</g:HTMLPanel>
 		</g:north>
 		
-		<g:west size = '60'>
+		<g:west size = '50'>
 			<covaView:ConfigView ui:field='configView' />
 		</g:west>
 		

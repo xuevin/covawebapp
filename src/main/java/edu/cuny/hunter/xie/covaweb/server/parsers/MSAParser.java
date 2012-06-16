@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import org.biojava3.core.exceptions.CompoundNotFoundError;
 import org.biojava3.core.sequence.AccessionID;
 import org.biojava3.core.sequence.MultipleSequenceAlignment;
 import org.biojava3.core.sequence.ProteinSequence;
@@ -26,12 +27,12 @@ public class MSAParser {
   static Logger logger = LoggerFactory.getLogger(MSAParser.class);
   
   public static MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> getMSA(
-      String string) throws IllegalArgumentException{
+      String string) throws IllegalArgumentException {
     logger.debug("Parsing Multiple Sequence Alignment from a String");
     
     MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = new MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound>();
-
-    try{
+    
+    try {
       StringTokenizer tokenizer = new StringTokenizer(string);
       while (tokenizer.hasMoreTokens()) {
         String identifier = tokenizer.nextToken();
@@ -40,9 +41,14 @@ public class MSAParser {
         sequence.setAccession(new AccessionID(identifier));
         msa.addAlignedSequence(sequence);
       }
-    }catch(IllegalArgumentException e){
+    } catch (IllegalArgumentException e) {
       logger.debug("Parsing MSA failed!");
-      throw new IllegalArgumentException("Invalid Interleaved Multiple Sequence Alignment",e);
+      throw new IllegalArgumentException(
+          "Invalid Interleaved Multiple Sequence Alignment", e);
+    } catch (CompoundNotFoundError e) {
+      logger.debug("Parsing MSA failed!");
+      throw new IllegalArgumentException(
+          "Invalid Interleaved Multiple Sequence Alignment", e);
     }
     
     return msa;

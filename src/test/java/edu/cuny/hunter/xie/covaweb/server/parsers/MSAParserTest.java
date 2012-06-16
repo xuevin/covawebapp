@@ -24,8 +24,8 @@ public class MSAParserTest {
     MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = MSAParser
         .getMSA(alignment);
     
-    //System.out.println(msa.getAlignedSequence(2).getSequenceAsString());
-    //System.out.println(msa.toString());
+    // System.out.println(msa.getAlignedSequence(2).getSequenceAsString());
+    // System.out.println(msa.toString());
     
     StringTokenizer original = new StringTokenizer(alignment);
     StringTokenizer fromBioJava = new StringTokenizer(msa.toString());
@@ -39,14 +39,23 @@ public class MSAParserTest {
       i++;
     }
   }
-  @Test(expected=IllegalArgumentException.class)
-  public void showThatGetMSAThrowsIllegalArgException() throws IOException{
-    String alignment = Files.toString(new File(getClass().getClassLoader().getResource("NP_001096969.fa.trash").getPath()), Charsets.UTF_8);
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void showThatGetMSAThrowsIllegalArgException() throws IOException {
+    String alignment = Files.toString(new File(getClass().getClassLoader()
+        .getResource("NP_001096969.fa.trash").getPath()), Charsets.UTF_8);
     
-    MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = MSAParser
-        .getMSA(alignment);
-    
-    
+    MSAParser.getMSA(alignment);
     
   }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void showThatGetMSAThrowsIllegalArgException2() throws IOException {
+    String alignment = Files.toString(new File(getClass().getClassLoader()
+        .getResource("PF03770_SEED.ann").getPath()), Charsets.UTF_8);
+    
+    MSAParser.getMSA(alignment);
+    
+  }
+  
 }
