@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 import org.biojava3.core.sequence.MultipleSequenceAlignment;
 import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.compound.AminoAcidCompound;
+import org.biojava3.core.sequence.template.LightweightProfile.StringFormat;
 import org.junit.Test;
 
 import com.google.common.base.Charsets;
@@ -25,7 +26,7 @@ public class MSAParserTest {
         .getMSA(alignment);
     
     // System.out.println(msa.getAlignedSequence(2).getSequenceAsString());
-    // System.out.println(msa.toString());
+     System.out.println(msa.toString(StringFormat.ALN));
     
     StringTokenizer original = new StringTokenizer(alignment);
     StringTokenizer fromBioJava = new StringTokenizer(msa.toString());

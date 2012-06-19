@@ -19,7 +19,7 @@ public class FastaParser {
   
   public static ProteinSequence getProteinSequenceFromFasta(String string)
       throws IllegalArgumentException {
-    logger.debug("Parsing String-FASTA into ProteinSequence from string");
+    logger.debug("Parsing FASTA into ProteinSequence from string");
     
     try {
        LinkedHashMap<String,ProteinSequence> proteinSeqMap = FastaReaderHelper.readFastaProteinSequence(

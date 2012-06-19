@@ -3,6 +3,7 @@ package edu.cuny.hunter.xie.covaweb.server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -14,14 +15,15 @@ import net.sf.json.JSONObject;
 import org.apache.commons.fileupload.FileItem;
 import org.biojava.bio.structure.Structure;
 import org.biojava.bio.structure.io.PDBFileParser;
-import org.biojava3.alignment.template.Profile.StringFormat;
 import org.biojava3.core.sequence.MultipleSequenceAlignment;
 import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.compound.AminoAcidCompound;
+import org.biojava3.core.sequence.template.LightweightProfile.StringFormat;
 
 import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.MSAParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.PDBParser;
+import edu.cuny.hunter.xie.covaweb.server.parsers.StockholmParser;
 
 import static gwtupload.shared.UConsts.PARAM_SHOW;
 import gwtupload.server.UploadAction;
@@ -82,11 +84,12 @@ public class FileUploader extends UploadAction {
             holder.put("value",structure.toPDB());
             
           }else if (fileType.equals("msa")){
-            //TODO - This only takes in interleaved alignments now. I think it should be able to read more.
-            MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = MSAParser.getMSA(file);
+            //TODO - This only takes in Stockholm formats now. I think it should be able to read more.
+            //MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = MSAParser.getMSA(file);
+            MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = StockholmParser.getMSA(new FileInputStream(file));
             
             holder.put("type", "msa");
-            holder.put("value", msa.toString());
+            holder.put("value", msa.toString(StringFormat.ALN));
           }
 
           

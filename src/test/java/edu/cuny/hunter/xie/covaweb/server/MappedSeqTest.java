@@ -41,7 +41,7 @@ public class MappedSeqTest {
   public void testAlignTwoMSAToQuery() throws IOException, IllegalArgumentException {
     
     // Get query aligned to HMM
-    RunHMMER runHmmer = new RunHMMER("/home/chrnovx/Applications/hmmer-3.0-linux-intel-x86_64/binaries");
+    RunHMMER runHmmer = new RunHMMER("/home/vxue/Applications/hmmer-3.0-linux-intel-x86_64/binaries");
     String hmmPath = getClass().getClassLoader().getResource("foo.hmm").getPath();
     String unalignedSeqFile = getClass().getClassLoader().getResource("PF03770_seed_wQuery.unaligned").getPath();
     runHmmer.run(hmmPath,unalignedSeqFile);

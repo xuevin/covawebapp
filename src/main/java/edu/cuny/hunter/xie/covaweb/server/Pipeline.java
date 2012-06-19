@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import edu.cuny.hunter.xie.covaweb.server.external.PfamService;
 import edu.cuny.hunter.xie.covaweb.server.external.PfamServiceObject;
+import edu.cuny.hunter.xie.covaweb.server.parsers.ClustalWParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.PDBParser;
-import edu.cuny.hunter.xie.covaweb.server.parsers.StockholmParser;
 import edu.cuny.hunter.xie.covaweb.server.utils.AlignmentUtils;
 import edu.cuny.hunter.xie.covaweb.shared.DataObject;
 import edu.cuny.hunter.xie.covaweb.shared.exceptions.PipelineException;
@@ -35,7 +35,7 @@ public class Pipeline {
   public Pipeline(DataObject dataObject) throws PipelineException {
     try {
       this.pdb = PDBParser.getStructureFromPDB(dataObject.getPdbString());
-      this.alignment = StockholmParser.getMSA(new ByteArrayInputStream(
+      this.alignment = ClustalWParser.getMSA(new ByteArrayInputStream(
           dataObject.getMsaString().getBytes()));
       this.queryProteinSequence = FastaParser
           .getProteinSequenceFromFasta(dataObject.getQueryString());
@@ -55,7 +55,7 @@ public class Pipeline {
       throws PipelineException {
     try {
       this.pdb = PDBParser.getStructureFromPDB(pdbInputString);
-      this.alignment = StockholmParser.getMSA(new ByteArrayInputStream(
+      this.alignment = ClustalWParser.getMSA(new ByteArrayInputStream(
           alignmentInputString.getBytes()));
       this.queryProteinSequence = FastaParser
           .getProteinSequenceFromFasta(queryAminoAcideSequenceString);
