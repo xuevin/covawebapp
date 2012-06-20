@@ -25,12 +25,9 @@ public class DisplayView extends Composite implements
   Label mainTextLabel;
   @UiField 
   HTML mainTextHTML;
-  @UiField(provided = true)
-  ProteinView proteinView;
   
   @Inject
-  public DisplayView(ProteinView proteinView) {
-    this.proteinView=proteinView;
+  public DisplayView() {
     
     initWidget(uiBinder.createAndBindUi(this));
   }

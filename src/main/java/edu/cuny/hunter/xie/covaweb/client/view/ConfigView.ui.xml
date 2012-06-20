@@ -3,8 +3,10 @@
 	xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
 
 	<ui:style>
-		.right {
-			float: right;
+		.rightButton {
+			float: left;
+			position: relative;
+			left: 350px;
 		}
 		
 		.leftFasta {
@@ -31,11 +33,11 @@
 			
 		}
 		.leftPadding {
-			margin-left: 50px;
+			border-style: none;
 		}
 	</ui:style>
 
-	<g:FlowPanel width="400px" styleName='{style.leftPadding}'>
+	<g:HTMLPanel styleName='{style.leftPadding}'>
 		<g:FlowPanel>
 			<g:Label text="Paste in FASTA file or" />
 			<upload:MultiUploader fileInputSize='40'
@@ -56,8 +58,8 @@
 			</g:FlowPanel>
 		</g:DisclosurePanel>
 		<g:Button ui:field="fastaSubmitButton" text="Submit"
-			styleName="{style.right}" />
+			styleName="{style.rightButton}" />
 		<g:Label text="" ui:field="responseLabel" />
-	</g:FlowPanel>
+	</g:HTMLPanel>
 
 </ui:UiBinder>

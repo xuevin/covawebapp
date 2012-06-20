@@ -5,13 +5,15 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 import edu.cuny.hunter.xie.covaweb.client.presenter.RootPresenter;
 
 public class RootView extends Composite implements RootPresenter.IRootView {
   
-  interface MyUiBinder extends UiBinder<DockLayoutPanel,RootView> {};
+  interface MyUiBinder extends UiBinder<Widget,RootView> {};
   
   private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
   
@@ -24,12 +26,16 @@ public class RootView extends Composite implements RootPresenter.IRootView {
   @UiField(provided = true)
   GridView gridView;
   
+  @UiField(provided = true)
+  ProteinView proteinView;
+  
   @Inject
   public RootView(ConfigView configView, DisplayView displayView,
-      GridView gridView) {
+      GridView gridView, ProteinView proteinView) {
     this.configView = configView;
     this.displayView = displayView;
     this.gridView = gridView;
+    this.proteinView = proteinView;
     initWidget(uiBinder.createAndBindUi(this));
   }
 }

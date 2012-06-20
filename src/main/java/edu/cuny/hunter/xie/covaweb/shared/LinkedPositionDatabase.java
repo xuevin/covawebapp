@@ -9,9 +9,9 @@ import com.google.gwt.view.client.ProvidesKey;
 public class LinkedPositionDatabase {
   
   public LinkedPositionDatabase(String outputFromCovaAnalaysis) {
-//    addLinkedPositionData(new LinkedPositionData(3, 2, 1.01, 2.0, 3.0, 4.0, 5.0, 6.0));
-//    addLinkedPositionData(new LinkedPositionData(0, 1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0));
-//    addLinkedPositionData(new LinkedPositionData(1, 2, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0));
+    addLinkedPositionData(new LinkedPositionData(3, 2, 1.01, 2.0, 3.0, 4.0, 5.0, 6.0));
+    addLinkedPositionData(new LinkedPositionData(0, 1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0));
+    addLinkedPositionData(new LinkedPositionData(1, 2, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0));
 
   }
 

@@ -1,32 +1,48 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:covaView='urn:import:edu.cuny.hunter.xie.covaweb.client.view'>
-	<!-- <g:HTMLPanel> -->
-	<!-- Foo -->
-	<!-- <covaView:ConfigView ui:field='configView' /> -->
-	<!-- </g:HTMLPanel> -->
-	<g:DockLayoutPanel unit='EM' height="1000px">
-		<g:north size='2'>
+	<ui:style>
+		.dock {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</ui:style>
+
+	<g:DockLayoutPanel unit='EM' width="98%" height="98%"
+		styleName="{style.dock}">
+		<g:north size='6'>
 			<g:HTMLPanel>
-				Root Panel North Side
+				<h1>CovaWebApp</h1>
 			</g:HTMLPanel>
 		</g:north>
 
-		<g:west size='50'>
-			<covaView:ConfigView ui:field='configView' />
+		<g:west size='40'>
+			<g:StackLayoutPanel unit="EM">
+				<g:stack>
+					<g:header size='2'>Load Files</g:header>
+					<covaView:ConfigView ui:field='configView' />
+				</g:stack>
+				<g:stack>
+					<g:header size='2'>View Protein</g:header>
+					<covaView:ProteinView ui:field='proteinView' />
+				</g:stack>
+			</g:StackLayoutPanel>
 		</g:west>
-
+		<g:east size='10'>
+			<g:HTMLPanel>
+				Root Panel East Side
+			</g:HTMLPanel>
+		</g:east>
 		<g:center>
 			<covaView:GridView ui:field='gridView' />
 		</g:center>
-		<g:south size='30'>
-			<covaView:DisplayView ui:field='displayView' />
-		</g:south>
-	</g:DockLayoutPanel>
 
-	<!-- xmlns:c='urn:import:com.google.gwt.user.cellview.client' -->
-	<!-- <g:HTMLPanel> -->
-	<!-- Hello, -->
-	<!-- <g:ListBox ui:field='listBox' visibleItemCount='1' /> -->
-	<!-- <c:CellTable ui:field="table" width='100%' /> -->
-	<!-- </g:HTMLPanel> -->
+		<g:south size='4'>
+
+			<g:HTMLPanel>
+				<covaView:DisplayView ui:field='displayView' />
+			</g:HTMLPanel>
+		</g:south>
+
+
+	</g:DockLayoutPanel>
 </ui:UiBinder>

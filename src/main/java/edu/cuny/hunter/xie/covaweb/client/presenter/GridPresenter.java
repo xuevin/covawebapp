@@ -55,6 +55,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
         LinkedPositionDatabase.LinkedPositionData.KEY_PROVIDER);
     dataGrid.setWidth("100%");
     
+    
     dataGrid.setEmptyTableWidget(new Label("Table is Empty"));
     
     LinkedPositionDatabase database = new LinkedPositionDatabase("foobar");
@@ -130,7 +131,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
           }
         });
     dataGrid.addColumn(positionAColumn, "Pos.A");
-    dataGrid.setColumnWidth(positionAColumn, 20, Unit.PCT);
+    dataGrid.setColumnWidth(positionAColumn, 10, Unit.PCT);
     
     // Position B.
     Column<LinkedPositionData,Number> positionBColumn = new Column<LinkedPositionData,Number>(
@@ -154,7 +155,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
           }
         });
     dataGrid.addColumn(positionBColumn, "Pos.B");
-    dataGrid.setColumnWidth(positionBColumn, 20, Unit.PCT);
+    dataGrid.setColumnWidth(positionBColumn, 10, Unit.PCT);
     
     
     // sca Score.
@@ -179,7 +180,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
           }
         });
     dataGrid.addColumn(scaScoreColumn, "SCA Score");
-    dataGrid.setColumnWidth(scaScoreColumn, 20, Unit.PCT);
+    dataGrid.setColumnWidth(scaScoreColumn, 10, Unit.PCT);
     
     
     // elsc Score.
@@ -204,7 +205,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
           }
         });
     dataGrid.addColumn(elscScoreColumn, "ELSC Score");
-    dataGrid.setColumnWidth(elscScoreColumn, 20, Unit.PCT);
+    dataGrid.setColumnWidth(elscScoreColumn, 10, Unit.PCT);
     
     
     // mi Score.
@@ -229,7 +230,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
           }
         });
     dataGrid.addColumn(miScoreColumn, "MI Score");
-    dataGrid.setColumnWidth(miScoreColumn, 20, Unit.PCT);
+    dataGrid.setColumnWidth(miScoreColumn, 10, Unit.PCT);
     
     // mi Score.
     Column<LinkedPositionData,Number> omesScoreColumn = new Column<LinkedPositionData,Number>(
@@ -253,7 +254,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
           }
         });
     dataGrid.addColumn(omesScoreColumn, "OMES Score");
-    dataGrid.setColumnWidth(omesScoreColumn, 20, Unit.PCT);
+    dataGrid.setColumnWidth(omesScoreColumn, 10, Unit.PCT);
     
     // cSum Score.
     Column<LinkedPositionData,Number> cSumScoreColumn = new Column<LinkedPositionData,Number>(
@@ -277,7 +278,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
           }
         });
     dataGrid.addColumn(cSumScoreColumn, "CSum Score");
-    dataGrid.setColumnWidth(cSumScoreColumn, 20, Unit.PCT);
+    dataGrid.setColumnWidth(cSumScoreColumn, 10, Unit.PCT);
     
     // random Score.
     Column<LinkedPositionData,Number> randomScoreColumn = new Column<LinkedPositionData,Number>(
@@ -301,7 +302,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
           }
         });
     dataGrid.addColumn(randomScoreColumn, "Random Score");
-    dataGrid.setColumnWidth(randomScoreColumn, 20, Unit.PCT);
+    dataGrid.setColumnWidth(randomScoreColumn, 10, Unit.PCT);
   }
   
 }
