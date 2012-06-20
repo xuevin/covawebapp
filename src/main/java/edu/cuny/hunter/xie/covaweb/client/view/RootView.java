@@ -21,10 +21,15 @@ public class RootView extends Composite implements RootPresenter.IRootView {
   @UiField(provided = true)
   DisplayView displayView;
   
+  @UiField(provided = true)
+  GridView gridView;
+  
   @Inject
-  public RootView(ConfigView configView, DisplayView displayView) {
+  public RootView(ConfigView configView, DisplayView displayView,
+      GridView gridView) {
     this.configView = configView;
     this.displayView = displayView;
+    this.gridView = gridView;
     initWidget(uiBinder.createAndBindUi(this));
   }
 }

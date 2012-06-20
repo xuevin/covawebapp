@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 public interface PipelineServiceAsync {
-  void runPipeline(edu.cuny.hunter.xie.covaweb.shared.DataObject object,
+  void runPipeline(edu.cuny.hunter.xie.covaweb.shared.LoadDataObject object,
       AsyncCallback<java.lang.String> callback);
   
 }

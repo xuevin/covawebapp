@@ -1,0 +1,27 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:upload='urn:import:gwtupload.client'
+	xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
+	<g:DockLayoutPanel unit="EM" ui:field="panel">
+		<g:north size="3">
+			<g:HTML ui:field="textPart" text="Covariance Result Table" />
+		</g:north>
+
+		<!-- DataGrid. -->
+		<!-- I can't figure out how to put the DataGrid Here! -->
+		<!-- I implemented the old fashioned way -->
+
+
+		<!-- Pager. -->
+		<g:south size="3">
+			<g:HTMLPanel>
+				<table style="width:100%">
+					<tr>
+						<td align='center'>
+							<g:HTMLPanel ui:field='pager' />
+						</td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:south>
+	</g:DockLayoutPanel>
+</ui:UiBinder>

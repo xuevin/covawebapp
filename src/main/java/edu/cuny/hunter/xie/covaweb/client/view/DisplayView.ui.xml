@@ -2,18 +2,19 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:upload='urn:import:gwtupload.client'
 	xmlns:c='urn:import:com.google.gwt.user.cellview.client'
 	xmlns:covaView='urn:import:edu.cuny.hunter.xie.covaweb.client.view'>
-	
+
 
 	<g:FlowPanel width="400px">
 		<g:FlowPanel>
 			<g:Label text="Results go Below" />
-			<g:Label text="This is the Display View - All Results Go Here" ui:field="mainTextLabel"/>
-			<g:ScrollPanel height="400px">
-				<g:HTML text="This is the Display HTML" ui:field="mainTextHTML"/>
+			<g:Label text="This is the Display View - All Results Go Here"
+				ui:field="mainTextLabel" />
+			<g:ScrollPanel height="300px">
+				<g:HTML text="This is the Display HTML" ui:field="mainTextHTML" />
 			</g:ScrollPanel>
 			<covaView:ProteinView ui:field='proteinView' />
 		</g:FlowPanel>
-		
+
 	</g:FlowPanel>
-	
+
 </ui:UiBinder>

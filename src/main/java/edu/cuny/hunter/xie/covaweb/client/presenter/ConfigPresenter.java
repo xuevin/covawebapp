@@ -1,13 +1,11 @@
 package edu.cuny.hunter.xie.covaweb.client.presenter;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
@@ -19,7 +17,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 import edu.cuny.hunter.xie.covaweb.client.COVAWebEventBus;
 import edu.cuny.hunter.xie.covaweb.client.service.PipelineServiceAsync;
 import edu.cuny.hunter.xie.covaweb.client.view.ConfigView;
-import edu.cuny.hunter.xie.covaweb.shared.DataObject;
+import edu.cuny.hunter.xie.covaweb.shared.LoadDataObject;
 import gwtupload.client.IUploader;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.IUploadStatus.Status;
@@ -82,7 +80,7 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
     @Override
     public void onClick(ClickEvent event) {
       // The object that is sent to the server
-      DataObject dataObject = null;
+      LoadDataObject dataObject = null;
       
       if (view.getFastaUploader().getStatus() == Status.UNINITIALIZED) {
         logger.info("Loading Files Via Copy/Paste");
@@ -96,9 +94,9 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
           return;
         } else {
           if (pdbText.length() == 0 && msaText.length() == 0) {
-            dataObject = new DataObject();
+            dataObject = new LoadDataObject();
           } else {
-            dataObject = new DataObject(fastaText, pdbText, msaText);
+            dataObject = new LoadDataObject(fastaText, pdbText, msaText);
           }
         }
         

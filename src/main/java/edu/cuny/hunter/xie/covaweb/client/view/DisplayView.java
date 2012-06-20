@@ -31,6 +31,7 @@ public class DisplayView extends Composite implements
   @Inject
   public DisplayView(ProteinView proteinView) {
     this.proteinView=proteinView;
+    
     initWidget(uiBinder.createAndBindUi(this));
   }
 

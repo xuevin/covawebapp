@@ -18,7 +18,7 @@ import edu.cuny.hunter.xie.covaweb.server.parsers.ClustalWParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.PDBParser;
 import edu.cuny.hunter.xie.covaweb.server.utils.AlignmentUtils;
-import edu.cuny.hunter.xie.covaweb.shared.DataObject;
+import edu.cuny.hunter.xie.covaweb.shared.LoadDataObject;
 import edu.cuny.hunter.xie.covaweb.shared.exceptions.PipelineException;
 
 public class Pipeline {
@@ -32,7 +32,7 @@ public class Pipeline {
   
   private MappedSeq resultMappedSeq;
   
-  public Pipeline(DataObject dataObject) throws PipelineException {
+  public Pipeline(LoadDataObject dataObject) throws PipelineException {
     try {
       this.pdb = PDBParser.getStructureFromPDB(dataObject.getPdbString());
       this.alignment = ClustalWParser.getMSA(new ByteArrayInputStream(
