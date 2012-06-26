@@ -22,7 +22,7 @@ public class ProteinPresenter extends BasePresenter<ProteinView,COVAWebEventBus>
   private ProteinWidget widget;
   
   public void onStart() {
-    widget = new ProteinWidget();
+    widget = new ProteinWidget(500,500);
     view.getHtmlPanel().add(widget);
     logger.info("The Protein Widget Has Been Started");
   }

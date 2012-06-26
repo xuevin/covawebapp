@@ -36,7 +36,7 @@
 			<covaView:GridView ui:field='gridView' />
 		</g:center>
 
-		<g:south size='4'>
+		<g:south size='10'>
 
 			<g:HTMLPanel>
 				<covaView:DisplayView ui:field='displayView' />

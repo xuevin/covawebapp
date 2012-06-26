@@ -7,7 +7,12 @@
 		.horizontalScroll {
 			overflow: auto;
 			overflow-y: hidden;
+			white-space: nowrap;
 		}
+		.fixedWidth{
+			font-family:"Courier New","Courier","Fixed","monospace";
+	
+	}
 	</ui:style>
 
 
@@ -16,7 +21,7 @@
 		<g:Label text="This is the Display View - All Results Go Here"
 			ui:field="mainTextLabel" />
 		<g:ScrollPanel styleName="{style.horizontalScroll}">
-			<g:HTML text="This is the Display HTML" ui:field="mainTextHTML" />
+			<g:HTML text="This is the Display HTML" ui:field="mainTextHTML" styleName="{style.fixedWidth}"/>
 		</g:ScrollPanel>
 	</g:HTMLPanel>
 

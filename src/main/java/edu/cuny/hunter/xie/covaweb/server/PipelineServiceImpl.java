@@ -19,7 +19,8 @@ public class PipelineServiceImpl extends RemoteServiceServlet implements
     //TODO - be able to handle the data objects with null values.
     Pipeline pipeline = new Pipeline(object);
     pipeline.run();
-    return(pipeline.getResults().toString());
+    
+    return(pipeline.getResults().toAlignedString());
     
     
   }
