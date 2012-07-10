@@ -1,4 +1,4 @@
-package edu.cuny.hunter.xie.covaweb.shared;
+package edu.cuny.hunter.xie.covaweb.client.utils;
 
 import java.util.List;
 

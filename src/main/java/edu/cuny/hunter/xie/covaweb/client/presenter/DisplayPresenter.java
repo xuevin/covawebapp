@@ -26,7 +26,7 @@ public class DisplayPresenter extends
 
   }
   
-  public void onResultsReady(String string) {
+  public void onAlignmentResultsReady(String string) {
      view.getMainTextHTML().setHTML(string.replace("\n", "<br>"));
      //TODO - update this
     

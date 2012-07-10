@@ -16,8 +16,10 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import edu.cuny.hunter.xie.covaweb.client.COVAWebEventBus;
 import edu.cuny.hunter.xie.covaweb.client.service.PipelineServiceAsync;
+import edu.cuny.hunter.xie.covaweb.client.utils.LinkedPositionDatabase;
 import edu.cuny.hunter.xie.covaweb.client.view.ConfigView;
 import edu.cuny.hunter.xie.covaweb.shared.LoadDataObject;
+import edu.cuny.hunter.xie.covaweb.shared.ResultsDataObject;
 import gwtupload.client.IUploader;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.IUploadStatus.Status;
@@ -104,17 +106,18 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
           eventBus.proteinLoad(pdbText);
         }
         
-        AsyncCallback<String> callback = new AsyncCallback<String>() {
+        AsyncCallback<ResultsDataObject> callback = new AsyncCallback<ResultsDataObject>() {
           @Override
-          public void onSuccess(String result) {
-            eventBus.resultsReady(result);
+          public void onSuccess(ResultsDataObject result) {
+            eventBus.alignmentResultsReady(result.getAlignmentString());
+            eventBus.covaResultsReady(new LinkedPositionDatabase(result.getStringifiedLinkedPositionDatabase()));
           }
           
           @Override
           public void onFailure(Throwable caught) {
             logger.info("RPC failed: " + caught.getMessage());
             eventBus
-                .resultsReady("RPC failed: " + caught.getLocalizedMessage());
+                .alignmentResultsReady("RPC failed: " + caught.getLocalizedMessage());
           }
         };
         preprocessService.runPipeline(dataObject, callback);

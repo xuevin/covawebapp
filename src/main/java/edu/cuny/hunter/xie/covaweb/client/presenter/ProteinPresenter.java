@@ -23,6 +23,7 @@ public class ProteinPresenter extends BasePresenter<ProteinView,COVAWebEventBus>
   
   public void onStart() {
     widget = new ProteinWidget(500,500);
+
     view.getHtmlPanel().add(widget);
     logger.info("The Protein Widget Has Been Started");
   }
@@ -30,5 +31,11 @@ public class ProteinPresenter extends BasePresenter<ProteinView,COVAWebEventBus>
   public void onProteinLoad(String pdbString){
     logger.info("Loading pdb file");
     widget.loadPDBFromString(pdbString);
+  }
+  public void onLinkPositions(float x1, float y1, float z1, float x2, float y2, float z2){
+    widget.addConnectedPoints(x1,y1,z1,x2,y2,z2);
+  }
+  public void onRemovePositions(float x1, float y1, float z1, float x2, float y2, float z2){
+    widget.removeConnectedPoints(x1,y1,z1,x2,y2,z2);
   }
 }

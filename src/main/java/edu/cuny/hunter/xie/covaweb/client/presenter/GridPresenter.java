@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gwt.cell.client.ActionCell;
+import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -21,6 +23,7 @@ import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -32,9 +35,9 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import edu.cuny.hunter.xie.covaweb.client.COVAWebEventBus;
+import edu.cuny.hunter.xie.covaweb.client.utils.LinkedPositionDatabase;
+import edu.cuny.hunter.xie.covaweb.client.utils.LinkedPositionDatabase.LinkedPositionData;
 import edu.cuny.hunter.xie.covaweb.client.view.GridView;
-import edu.cuny.hunter.xie.covaweb.shared.LinkedPositionDatabase;
-import edu.cuny.hunter.xie.covaweb.shared.LinkedPositionDatabase.LinkedPositionData;
 
 @Presenter(view = GridView.class)
 public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
@@ -44,7 +47,9 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
   
   public interface IGridView {
     HTML getLabel();
+    
     DockLayoutPanel getPanel();
+    
     HTMLPanel getPagerPanel();
   }
   
@@ -55,11 +60,35 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
         LinkedPositionDatabase.LinkedPositionData.KEY_PROVIDER);
     dataGrid.setWidth("100%");
     
-    
     dataGrid.setEmptyTableWidget(new Label("Table is Empty"));
     
-    LinkedPositionDatabase database = new LinkedPositionDatabase("foobar");
+//    LinkedPositionDatabase database = new LinkedPositionDatabase("foobar");
+//    
+//    ListHandler<LinkedPositionData> sortHandler = new ListHandler<LinkedPositionData>(
+//        database.getDataProvider().getList());
+//    dataGrid.addColumnSortHandler(sortHandler);
+//    
+//    SimplePager.Resources pagerResources = GWT
+//        .create(SimplePager.Resources.class);
+//    SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources,
+//        false, 0, true);
+//    pager.setDisplay(dataGrid);
+//    
+//    final MultiSelectionModel<LinkedPositionData> selectionModel = new MultiSelectionModel<LinkedPositionData>(
+//        LinkedPositionData.KEY_PROVIDER);
+//    dataGrid.setSelectionModel(selectionModel, DefaultSelectionEventManager
+//        .<LinkedPositionData> createCheckboxManager());
+//    
+//    initTableColumns(selectionModel, sortHandler);
+//    // Add the CellList to the adapter in the database.
+//    database.addDataDisplay(dataGrid);
+//    
+//    view.getPagerPanel().add(pager);
+//    view.getPanel().add(dataGrid);
     
+  }
+  
+  public void onCovaResultsReady(LinkedPositionDatabase database) {
     ListHandler<LinkedPositionData> sortHandler = new ListHandler<LinkedPositionData>(
         database.getDataProvider().getList());
     dataGrid.addColumnSortHandler(sortHandler);
@@ -70,7 +99,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
         false, 0, true);
     pager.setDisplay(dataGrid);
     
-    final SelectionModel<LinkedPositionData> selectionModel = new MultiSelectionModel<LinkedPositionData>(
+    final MultiSelectionModel<LinkedPositionData> selectionModel = new MultiSelectionModel<LinkedPositionData>(
         LinkedPositionData.KEY_PROVIDER);
     dataGrid.setSelectionModel(selectionModel, DefaultSelectionEventManager
         .<LinkedPositionData> createCheckboxManager());
@@ -81,11 +110,6 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
     
     view.getPagerPanel().add(pager);
     view.getPanel().add(dataGrid);
-    
-  }
-  
-  public void onCovaResultsReady(LinkedPositionDatabase database) {
-    
   }
   
   /**
@@ -106,6 +130,17 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
         return selectionModel.isSelected(object);
       }
     };
+    checkColumn.setFieldUpdater(new FieldUpdater<LinkedPositionData,Boolean>() {
+      @Override
+      public void update(int index, LinkedPositionData object, Boolean value) {
+        if(value==Boolean.TRUE){
+          eventBus.linkPositions(0f, 0f, 0f, 2f, 2f, 2f);
+        }else{
+          eventBus.removePositions(0f, 0f, 0f, 2f, 2f, 2f);
+        }
+//        Window.alert("You clicked " + object.getPositionA() + value.toString());
+      }
+    });
     dataGrid.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
     dataGrid.setColumnWidth(checkColumn, 40, Unit.PX);
     
@@ -157,7 +192,6 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
     dataGrid.addColumn(positionBColumn, "Pos.B");
     dataGrid.setColumnWidth(positionBColumn, 10, Unit.PCT);
     
-    
     // sca Score.
     Column<LinkedPositionData,Number> scaScoreColumn = new Column<LinkedPositionData,Number>(
         new NumberCell()) {
@@ -182,7 +216,6 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
     dataGrid.addColumn(scaScoreColumn, "SCA Score");
     dataGrid.setColumnWidth(scaScoreColumn, 10, Unit.PCT);
     
-    
     // elsc Score.
     Column<LinkedPositionData,Number> elscScoreColumn = new Column<LinkedPositionData,Number>(
         new NumberCell()) {
@@ -206,7 +239,6 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
         });
     dataGrid.addColumn(elscScoreColumn, "ELSC Score");
     dataGrid.setColumnWidth(elscScoreColumn, 10, Unit.PCT);
-    
     
     // mi Score.
     Column<LinkedPositionData,Number> miScoreColumn = new Column<LinkedPositionData,Number>(
@@ -303,6 +335,17 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
         });
     dataGrid.addColumn(randomScoreColumn, "Random Score");
     dataGrid.setColumnWidth(randomScoreColumn, 10, Unit.PCT);
+    
+//    // Click button
+//    Column<LinkedPositionData,String> buttonColumn = new Column<LinkedPositionData,String>(
+//        new ButtonCell()) {
+//      @Override
+//      public String getValue(LinkedPositionData object) {
+//        return "foo";
+//      }
+//    };
+//    dataGrid.addColumn(buttonColumn, "Draw");
+//    dataGrid.setColumnWidth(buttonColumn, 10, Unit.PCT);
   }
   
 }
