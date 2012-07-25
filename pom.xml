@@ -148,6 +148,7 @@
 					<runTarget>COVAWeb.html</runTarget>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<i18nMessagesBundle>edu.cuny.hunter.xie.covaweb.client.Messages</i18nMessagesBundle>
+					     <extraJvmArgs>-Xmx1024m</extraJvmArgs> 
 				</configuration>
 			</plugin>
 

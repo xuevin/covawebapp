@@ -110,7 +110,7 @@ public class ConfigPresenter extends BasePresenter<ConfigView,COVAWebEventBus> {
           @Override
           public void onSuccess(ResultsDataObject result) {
             eventBus.alignmentResultsReady(result.getAlignmentString());
-            eventBus.covaResultsReady(new LinkedPositionDatabase(result.getStringifiedLinkedPositionDatabase()));
+            eventBus.covaResultsReady(new LinkedPositionDatabase(result.getCovaDataList()));
           }
           
           @Override

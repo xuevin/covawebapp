@@ -2,9 +2,18 @@ package edu.cuny.hunter.xie.covaweb.server;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.biojava3.core.sequence.MultipleSequenceAlignment;
+import org.biojava3.core.sequence.ProteinSequence;
+import org.biojava3.core.sequence.compound.AminoAcidCompound;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +25,8 @@ import covariance.algorithms.ELSCCovariance;
 import covariance.algorithms.JavaSCA;
 import covariance.algorithms.MICovariance;
 import covariance.algorithms.OmesCovariance;
+import edu.cuny.hunter.xie.covaweb.server.parsers.ClustalWParser;
+import edu.cuny.hunter.xie.covaweb.shared.CovaDataRow;
 
 public class ExecuteCOVATest {
   
@@ -48,6 +59,31 @@ public class ExecuteCOVATest {
     for (int i = 0; i < outputFromMain.size(); i++) {
       assertEquals(outputFromMain.get(i), outputFromCustomWrapper.get(i));
     }
+    
+  }
+  @Test
+  public void confirmThatGetOutputFromBioJavaMSAWorks() throws Exception{
+    File stockholmMSA = new File(getClass().getClassLoader().getResource(
+        "PF03770_seed_wQuery.sto").getFile());
+    
+   MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = ClustalWParser.getMSA(new FileInputStream(stockholmMSA));
+   ArrayList<CovaDataRow> foo = (ExecuteCOVA.getOutputFromBioJavaMSA(msa));
+   System.out.println(foo.size());
+   
+   
+   File tempfile = File.createTempFile("covaoutput", "tmp");
+   BufferedWriter out = new BufferedWriter(new FileWriter(tempfile));
+
+   StringBuilder builder = new StringBuilder();
+   for (CovaDataRow item : foo) {
+     builder.append(item.toString() + "\n");
+   }
+   
+   out.write(builder.toString());
+   out.close();
+   
+   
+   assertNotNull(foo);
     
   }
   
@@ -133,7 +169,7 @@ public class ExecuteCOVATest {
   }
   @Test
   public void confirmThatAllCanBeCombinedInASingleFunction() throws Exception{
-    List<String> list = ExecuteCOVA.getOutputFromAll(file);
+    List<CovaDataRow> list = ExecuteCOVA.getOutputFromAll(file);
     
     for(int i = 0;i<20;i++){
       System.out.println(list.get(i));

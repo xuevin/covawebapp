@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.biojava3.core.sequence.MultipleSequenceAlignment;
@@ -26,7 +27,13 @@ public class MSAParserTest {
         .getMSA(alignment);
     
     // System.out.println(msa.getAlignedSequence(2).getSequenceAsString());
-     System.out.println(msa.toString(StringFormat.ALN));
+//     System.out.println(msa.toString(StringFormat.ALN));
+//    
+//    List<ProteinSequence> listOfSequences = msa.getAlignedSequences();
+//    for(ProteinSequence item :listOfSequences){
+//      System.out.println(item.getAccession());
+////      System.out.println(item.toString());
+//    }
     
     StringTokenizer original = new StringTokenizer(alignment);
     StringTokenizer fromBioJava = new StringTokenizer(msa.toString());

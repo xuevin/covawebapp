@@ -1,20 +1,35 @@
 package edu.cuny.hunter.xie.covaweb.client.utils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
+import edu.cuny.hunter.xie.covaweb.shared.CovaDataRow;
+
 public class LinkedPositionDatabase {
-  
-  public LinkedPositionDatabase(String outputFromCovaAnalaysis) {
-    addLinkedPositionData(new LinkedPositionData(3, 2, 1.01, 2.0, 3.0, 4.0, 5.0, 6.0));
-    addLinkedPositionData(new LinkedPositionData(0, 1, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0));
-    addLinkedPositionData(new LinkedPositionData(1, 2, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0));
+  private Logger logger = Logger.getLogger(getClass().toString());
 
+  public LinkedPositionDatabase(ArrayList<CovaDataRow> list) {
+    
+    for (CovaDataRow line : list) {
+      addLinkedPositionData(new LinkedPositionData(line.getPos1(),
+          line.getPos2(), line.getScaScore(), line.getElscScore(),
+          line.getMiScore(), line.getOmesScore(), line.getCsumScore(),
+          line.getRandomScore()));
+      
+    }
+    //logger.info("" + list.size());
+    // addLinkedPositionData(new LinkedPositionData(0, 1, 1.0, 2.0, 3.0, 4.0,
+    // 5.0, 6.0));
+    // addLinkedPositionData(new LinkedPositionData(1, 2, 1.0, 2.0, 3.0, 4.0,
+    // 5.0, 6.0));
+    
   }
-
+  
   private static int nextId = 0;
   
   private ListDataProvider<LinkedPositionData> dataProvider = new ListDataProvider<LinkedPositionData>();
@@ -39,7 +54,7 @@ public class LinkedPositionDatabase {
   public LinkedPositionDatabase get() {
     // TODO Auto-generated method stub
     // FIXME - Return a test instance
-    LinkedPositionDatabase foo = new LinkedPositionDatabase("");
+    LinkedPositionDatabase foo = new LinkedPositionDatabase(new ArrayList<CovaDataRow>());
     return foo;
   }
   

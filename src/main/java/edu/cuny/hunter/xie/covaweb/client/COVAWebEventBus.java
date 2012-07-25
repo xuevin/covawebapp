@@ -22,7 +22,7 @@ public interface COVAWebEventBus extends EventBus {
   @Event(handlers = {DisplayPresenter.class})
   public void alignmentResultsReady(String string);
   
-  @Event(handlers ={ProteinPresenter.class})
+  @Event(handlers ={/*ProteinPresenter.class*/})//TODO Uncomment to load protein
   public void proteinLoad(String pdbString);
   
   @Event(handlers ={GridPresenter.class})

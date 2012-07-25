@@ -1,11 +1,12 @@
 package edu.cuny.hunter.xie.covaweb.shared;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
-public class ResultsDataObject implements Serializable {
-  private static final long serialVersionUID = 1L;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class ResultsDataObject implements IsSerializable {
   private String alignmentString;
-  private String stringifiedLinkedPositionDatabase;
+  private ArrayList<CovaDataRow> covaDataList;
   
   public ResultsDataObject() {
     
@@ -19,12 +20,12 @@ public class ResultsDataObject implements Serializable {
     return alignmentString;
   }
   
-  public String getStringifiedLinkedPositionDatabase() {
-    return stringifiedLinkedPositionDatabase;
+  public ArrayList<CovaDataRow> getCovaDataList() {
+    return covaDataList;
   }
   
-  public void setStringifiedLinkedPositionDatabase(String linkedPositionDatabase) {
-    this.stringifiedLinkedPositionDatabase = linkedPositionDatabase;
+  public void setCovaDataObject(ArrayList<CovaDataRow> covaDataList) {
+    this.covaDataList = covaDataList;
   }
   
 }

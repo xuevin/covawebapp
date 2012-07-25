@@ -1,21 +1,20 @@
 package edu.cuny.hunter.xie.covaweb.shared;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class LoadDataObject implements Serializable{
+public class LoadDataObject implements IsSerializable {
   /**
    * 
    */
-  private static final long serialVersionUID = 1L;
   private String msaString, queryString, pdbString;
   
-  public LoadDataObject(){
+  public LoadDataObject() {
     
   }
   
   public LoadDataObject(String queryString) {
     this.setQueryString(queryString);
-
+    
   }
   
   public LoadDataObject(String queryString, String pdbString, String msaString) {
@@ -23,27 +22,27 @@ public class LoadDataObject implements Serializable{
     setPdbString(pdbString);
     setQueryString(queryString);
   }
-
+  
   public void setMsaString(String msaString) {
     this.msaString = msaString;
   }
-
+  
   public String getMsaString() {
     return msaString;
   }
-
+  
   public void setQueryString(String queryString) {
     this.queryString = queryString;
   }
-
+  
   public String getQueryString() {
     return queryString;
   }
-
+  
   public void setPdbString(String pdbString) {
     this.pdbString = pdbString;
   }
-
+  
   public String getPdbString() {
     return pdbString;
   }
