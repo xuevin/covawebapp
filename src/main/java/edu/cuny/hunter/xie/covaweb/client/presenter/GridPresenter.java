@@ -62,29 +62,6 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
     
     dataGrid.setEmptyTableWidget(new Label("Table is Empty"));
     
-//    LinkedPositionDatabase database = new LinkedPositionDatabase("foobar");
-//    
-//    ListHandler<LinkedPositionData> sortHandler = new ListHandler<LinkedPositionData>(
-//        database.getDataProvider().getList());
-//    dataGrid.addColumnSortHandler(sortHandler);
-//    
-//    SimplePager.Resources pagerResources = GWT
-//        .create(SimplePager.Resources.class);
-//    SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources,
-//        false, 0, true);
-//    pager.setDisplay(dataGrid);
-//    
-//    final MultiSelectionModel<LinkedPositionData> selectionModel = new MultiSelectionModel<LinkedPositionData>(
-//        LinkedPositionData.KEY_PROVIDER);
-//    dataGrid.setSelectionModel(selectionModel, DefaultSelectionEventManager
-//        .<LinkedPositionData> createCheckboxManager());
-//    
-//    initTableColumns(selectionModel, sortHandler);
-//    // Add the CellList to the adapter in the database.
-//    database.addDataDisplay(dataGrid);
-//    
-//    view.getPagerPanel().add(pager);
-//    view.getPanel().add(dataGrid);
     
   }
   
@@ -312,40 +289,6 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
     dataGrid.addColumn(cSumScoreColumn, "CSum Score");
     dataGrid.setColumnWidth(cSumScoreColumn, 10, Unit.PCT);
     
-    // random Score.
-    Column<LinkedPositionData,Number> randomScoreColumn = new Column<LinkedPositionData,Number>(
-        new NumberCell()) {
-      @Override
-      public Number getValue(LinkedPositionData object) {
-        return object.getRandomScore();
-      }
-    };
-    randomScoreColumn.setSortable(true);
-    sortHandler.setComparator(randomScoreColumn,
-        new Comparator<LinkedPositionData>() {
-          public int compare(LinkedPositionData o1, LinkedPositionData o2) {
-            if (o1.getRandomScore() < o2.getRandomScore()) {
-              return -1;
-            } else if (o1.getRandomScore() > o2.getRandomScore()) {
-              return 1;
-            } else {
-              return 0;
-            }
-          }
-        });
-    dataGrid.addColumn(randomScoreColumn, "Random Score");
-    dataGrid.setColumnWidth(randomScoreColumn, 10, Unit.PCT);
-    
-//    // Click button
-//    Column<LinkedPositionData,String> buttonColumn = new Column<LinkedPositionData,String>(
-//        new ButtonCell()) {
-//      @Override
-//      public String getValue(LinkedPositionData object) {
-//        return "foo";
-//      }
-//    };
-//    dataGrid.addColumn(buttonColumn, "Draw");
-//    dataGrid.setColumnWidth(buttonColumn, 10, Unit.PCT);
   }
   
 }
