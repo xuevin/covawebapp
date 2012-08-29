@@ -3,6 +3,7 @@ package edu.cuny.hunter.xie.covaweb.server;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.biojava.bio.structure.Structure;
 import org.biojava3.alignment.template.SequencePair;
@@ -18,6 +19,7 @@ import edu.cuny.hunter.xie.covaweb.server.parsers.ClustalWParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.FastaParser;
 import edu.cuny.hunter.xie.covaweb.server.parsers.PDBParser;
 import edu.cuny.hunter.xie.covaweb.server.utils.AlignmentUtils;
+import edu.cuny.hunter.xie.covaweb.shared.CovaDataRow;
 import edu.cuny.hunter.xie.covaweb.shared.LoadDataObject;
 import edu.cuny.hunter.xie.covaweb.shared.exceptions.PipelineException;
 
@@ -31,6 +33,8 @@ public class Pipeline {
   private Structure pdb;
   
   private MappedSeq resultMappedSeq;
+  
+  private ArrayList<CovaDataRow> covaDataResults;
   
   public Pipeline(LoadDataObject dataObject) throws PipelineException {
     try {
@@ -106,15 +110,41 @@ public class Pipeline {
     return false;
   }
   
-  private boolean runPipelineAllProvided() {
+  private boolean runPipelineAllProvided() throws PipelineException {
     logger.info("The pipeline has all the pieces required to continue");
-    resultMappedSeq = new MappedSeq(queryProteinSequence, pdb, alignment);
+    
+    try {
+      logger.info("Mapping alignment pdb");
+      resultMappedSeq = new MappedSeq(queryProteinSequence, pdb, alignment);
+    } catch (Exception e) {
+      throw new PipelineException("Encountered error during alignment mapping");
+    }
+    
+    
+    try {
+      logger.info("Starting Covariance Analysis");
+      int start = resultMappedSeq.getIndexInHmmMSAForPDBAt(1);
+      int end = resultMappedSeq.getIndexInHmmMSAForPDBAt(pdb.getChain(0).getAtomLength());
+      
+      ArrayList<CovaDataRow> list = ExecuteCOVA.getOutputFromBioJavaMSA(
+          alignment, start, end);
+      this.covaDataResults = list;
+      
+      logger.info("Covariance Analysis Complete " + list.size());
+    } catch (Exception e) {
+      throw new PipelineException(
+          "Encountered error during covariance analysis", e);
+    }
+    
     return true;
-    // TODO put a trycatch here
     
   }
   
-  public MappedSeq getResults() {
+  public MappedSeq getMappedSeqResults() {
     return resultMappedSeq;
+  }
+  
+  public ArrayList<CovaDataRow> getCovaResults() {
+    return covaDataResults;
   }
 }

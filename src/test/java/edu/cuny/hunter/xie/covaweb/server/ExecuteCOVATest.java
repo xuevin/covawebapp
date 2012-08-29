@@ -67,7 +67,7 @@ public class ExecuteCOVATest {
         "PF03770_seed_wQuery.sto").getFile());
     
    MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = ClustalWParser.getMSA(new FileInputStream(stockholmMSA));
-   ArrayList<CovaDataRow> foo = (ExecuteCOVA.getOutputFromBioJavaMSA(msa));
+   ArrayList<CovaDataRow> foo = ExecuteCOVA.getOutputFromBioJavaMSA(msa,0,msa.getLength());
    System.out.println(foo.size());
    
    

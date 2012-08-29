@@ -12,9 +12,10 @@ import edu.cuny.hunter.xie.covaweb.client.COVAWebEventBus;
 import edu.cuny.hunter.xie.covaweb.client.view.ProteinView;
 
 @Presenter(view = ProteinView.class)
-public class ProteinPresenter extends BasePresenter<ProteinView,COVAWebEventBus>{
+public class ProteinPresenter extends
+    BasePresenter<ProteinView,COVAWebEventBus> {
   
-  public interface IProteinView{
+  public interface IProteinView {
     HTMLPanel getHtmlPanel();
   }
   
@@ -22,20 +23,22 @@ public class ProteinPresenter extends BasePresenter<ProteinView,COVAWebEventBus>
   private ProteinWidget widget;
   
   public void onStart() {
-    widget = new ProteinWidget(500,500);
-
+    widget = new ProteinWidget(500, 500);
+    
     view.getHtmlPanel().add(widget);
     logger.info("The Protein Widget Has Been Started");
   }
   
-  public void onProteinLoad(String pdbString){
+  public void onProteinLoad(String pdbString) {
     logger.info("Loading pdb file");
     widget.loadPDBFromString(pdbString);
   }
-  public void onLinkPositions(float x1, float y1, float z1, float x2, float y2, float z2){
-    widget.addConnectedPoints(x1,y1,z1,x2,y2,z2);
+  
+  public void onLinkPositions(int pos1, int pos2) {
+    widget.addConnectedPoints(pos1, pos2);
   }
-  public void onRemovePositions(float x1, float y1, float z1, float x2, float y2, float z2){
-    widget.removeConnectedPoints(x1,y1,z1,x2,y2,z2);
+  
+  public void onRemovePositions(int pos1,int pos2){
+    widget.removeConnectedPoints(pos1,pos2);
   }
 }

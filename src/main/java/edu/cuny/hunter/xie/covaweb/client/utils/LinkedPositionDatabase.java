@@ -1,6 +1,7 @@
 package edu.cuny.hunter.xie.covaweb.client.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -12,17 +13,25 @@ import edu.cuny.hunter.xie.covaweb.shared.CovaDataRow;
 
 public class LinkedPositionDatabase {
   private Logger logger = Logger.getLogger(getClass().toString());
-
-  public LinkedPositionDatabase(ArrayList<CovaDataRow> list) {
+  
+  public LinkedPositionDatabase(ArrayList<CovaDataRow> list,
+      HashMap<Integer,Integer> alignmentPosToPdbPosMapping) {
     
     for (CovaDataRow line : list) {
-      addLinkedPositionData(new LinkedPositionData(line.getPos1(),
-          line.getPos2(), line.getScaScore(), line.getElscScore(),
-          line.getMiScore(), line.getOmesScore(), line.getCsumScore(),
-          line.getRandomScore()));
       
+      if (alignmentPosToPdbPosMapping.get(line.getPos1()) == null
+          || alignmentPosToPdbPosMapping.get(line.getPos2()) == null) {
+        
+      } else {
+        addLinkedPositionData(new LinkedPositionData(line.getPos1(),
+            line.getPos2(), line.getScaScore(), line.getElscScore(),
+            line.getMiScore(), line.getOmesScore(), line.getCsumScore(), alignmentPosToPdbPosMapping.get(line
+                .getPos1()), alignmentPosToPdbPosMapping.get(line.getPos2())));
+        
+        
+      }
     }
-    //logger.info("" + list.size());
+    // logger.info("" + list.size());
     // addLinkedPositionData(new LinkedPositionData(0, 1, 1.0, 2.0, 3.0, 4.0,
     // 5.0, 6.0));
     // addLinkedPositionData(new LinkedPositionData(1, 2, 1.0, 2.0, 3.0, 4.0,
@@ -54,22 +63,24 @@ public class LinkedPositionDatabase {
   public LinkedPositionDatabase get() {
     // TODO Auto-generated method stub
     // FIXME - Return a test instance
-    LinkedPositionDatabase foo = new LinkedPositionDatabase(new ArrayList<CovaDataRow>());
+    LinkedPositionDatabase foo = new LinkedPositionDatabase(
+        new ArrayList<CovaDataRow>(), new HashMap<Integer,Integer>());
     return foo;
   }
   
   // Each Linked Position Data Is an output row from the Covariance analysis.
   public static class LinkedPositionData {
     
-    private int positionA;
-    private int positionB;
+    private int pos1;
+    private int pos2;
     private double scaScore;
     private double elscScore;
     private double miScore;
     private double omesScore;
     private double cSumScore;
-    private double randomScore;
     private final int id;
+    private int pdbPos1;
+    private int pdbPos2;
     
     public static final ProvidesKey<LinkedPositionData> KEY_PROVIDER = new ProvidesKey<LinkedPositionData>() {
       public Object getKey(LinkedPositionData item) {
@@ -77,18 +88,18 @@ public class LinkedPositionDatabase {
       }
     };
     
-    public LinkedPositionData(int positionA, int positionB, double scaScore,
-        double elscScore, double miScore, double omesScore, double csumScore,
-        double randomScore) {
+    public LinkedPositionData(int pos1, int pos2, double scaScore,
+        double elscScore, double miScore, double omesScore, double csumScore, int pdbPos1, int pdbPos2) {
       
-      this.positionA = positionA;
-      this.positionB = positionB;
+      this.pos1 = pos1;
+      this.pos2 = pos2;
       this.scaScore = scaScore;
       this.elscScore = elscScore;
       this.miScore = miScore;
       this.omesScore = omesScore;
       this.cSumScore = csumScore;
-      this.randomScore = randomScore;
+      this.pdbPos1 = pdbPos1;
+      this.pdbPos2 = pdbPos2;
       
       this.id = nextId;
       nextId++;
@@ -98,12 +109,12 @@ public class LinkedPositionDatabase {
       return id;
     }
     
-    public int getPositionA() {
-      return positionA;
+    public int getPos1() {
+      return pos1;
     }
     
-    public int getPositionB() {
-      return positionB;
+    public int getPos2() {
+      return pos2;
     }
     
     public double getScaScore() {
@@ -126,8 +137,12 @@ public class LinkedPositionDatabase {
       return cSumScore;
     }
     
-    public double getRandomScore() {
-      return randomScore;
+    public int getPdbPos1() {
+      return pdbPos1;
+    }
+    
+    public int getPdbPos2() {
+      return pdbPos2;
     }
     
     @Override

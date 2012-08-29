@@ -3,7 +3,6 @@ package edu.cuny.hunter.xie.covaweb.server;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +25,21 @@ import edu.cuny.hunter.xie.covaweb.shared.CovaDataRow;
 public class ExecuteCOVA {
   public static Logger logger = LoggerFactory.getLogger(ExecuteCOVA.class);
   
-  public static ArrayList<CovaDataRow> getOutputFromAll(File file) throws Exception {
+  public static ArrayList<CovaDataRow> getOutputFromAll(File file, int start,
+      int stop) throws Exception {
     Alignment a = new Alignment("1", file, false);
-    return getOutputFromAll(a);
+    return getOutputFromAll(a, start, stop);
+  }
+  
+  public static ArrayList<CovaDataRow> getOutputFromAll(File file)
+      throws Exception {
+    Alignment a = new Alignment("1", file, false);
+    return getOutputFromAll(a, 0, a.getNumColumnsInAlignment());
   }
   
   public static ArrayList<CovaDataRow> getOutputFromBioJavaMSA(
-      MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa)
-      throws Exception {
+      MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa,
+      int start, int stop) throws Exception {
     logger.debug("Writing file to disk");
     File file;
     file = File.createTempFile("cova", "tmp");
@@ -48,11 +54,12 @@ public class ExecuteCOVA {
     out.write(builder.toString());
     out.close();
     file.deleteOnExit();
-    return getOutputFromAll(file);
+    return getOutputFromAll(file, start, stop);
     
   }
   
-  public static ArrayList<CovaDataRow> getOutputFromAll(Alignment a) throws Exception {
+  public static ArrayList<CovaDataRow> getOutputFromAll(Alignment a, int start,
+      int stop) throws Exception {
     logger.info("Executing Covariance Algorithms");
     
     // Run each algorithm
@@ -68,21 +75,18 @@ public class ExecuteCOVA {
     // List<String> list = new ArrayList<String>();
     // list.add("i\tj\tsca\telsc\tmi\tomes\tcsum\trandom");
     
-    for (int i = 0; i < a.getNumColumnsInAlignment(); i++) {
+    for (int i = start; i <= stop; i++) {
       if (a.columnHasValidResidue(i)) {
-        for (int j = i + 1; j < a.getNumColumnsInAlignment(); j++) {
+        for (int j = i + 1; j <= stop; j++) {
           if (a.columnHasValidResidue(j)) {
             results.add(new CovaDataRow(i, j, sca.getScore(a, i, j), elsc
                 .getScore(a, i, j), mi.getScore(a, i, j), omes
                 .getScore(a, i, j), csum.getScore(a, i, j), 0));
-            
-            if(results.size()==100){
-              return results;
-            }
-            // list.add(i + "\t" + j + "\t" + sca.getScore(a, i, j) + "\t"
-            // + elsc.getScore(a, i, j) + "\t" + mi.getScore(a, i, j) + "\t"
-            // + omes.getScore(a, i, j) + "\t" + csum.getScore(a, i, j) + "\t"
-            // + random.getScore(a, i, j));
+
+            // Enable this for Testing
+             if(results.size()==100){
+             return results;
+             }
           }
         }
       }

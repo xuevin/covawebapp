@@ -111,9 +111,9 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
       @Override
       public void update(int index, LinkedPositionData object, Boolean value) {
         if(value==Boolean.TRUE){
-          eventBus.linkPositions(0f, 0f, 0f, 2f, 2f, 2f);
+          eventBus.linkPositions(object.getPdbPos1(),object.getPdbPos2());
         }else{
-          eventBus.removePositions(0f, 0f, 0f, 2f, 2f, 2f);
+          eventBus.removePositions(object.getPdbPos1(),object.getPdbPos2());
         }
 //        Window.alert("You clicked " + object.getPositionA() + value.toString());
       }
@@ -126,23 +126,23 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
         new NumberCell()) {
       @Override
       public Number getValue(LinkedPositionData object) {
-        return object.getPositionA();
+        return object.getPos1();
       }
     };
     positionAColumn.setSortable(true);
     sortHandler.setComparator(positionAColumn,
         new Comparator<LinkedPositionData>() {
           public int compare(LinkedPositionData o1, LinkedPositionData o2) {
-            if (o1.getPositionA() < o2.getPositionA()) {
+            if (o1.getPos1() < o2.getPos1()) {
               return -1;
-            } else if (o1.getPositionA() > o2.getPositionA()) {
+            } else if (o1.getPos1() > o2.getPos1()) {
               return 1;
             } else {
               return 0;
             }
           }
         });
-    dataGrid.addColumn(positionAColumn, "Pos.A");
+    dataGrid.addColumn(positionAColumn, "nsSNP");
     dataGrid.setColumnWidth(positionAColumn, 10, Unit.PCT);
     
     // Position B.
@@ -150,16 +150,16 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
         new NumberCell()) {
       @Override
       public Number getValue(LinkedPositionData object) {
-        return object.getPositionB();
+        return object.getPos2();
       }
     };
     positionBColumn.setSortable(true);
     sortHandler.setComparator(positionBColumn,
         new Comparator<LinkedPositionData>() {
           public int compare(LinkedPositionData o1, LinkedPositionData o2) {
-            if (o1.getPositionB() < o2.getPositionB()) {
+            if (o1.getPos2() < o2.getPos2()) {
               return -1;
-            } else if (o1.getPositionB() > o2.getPositionB()) {
+            } else if (o1.getPos2() > o2.getPos2()) {
               return 1;
             } else {
               return 0;
@@ -189,7 +189,7 @@ public class GridPresenter extends BasePresenter<GridView,COVAWebEventBus> {
               return 0;
             }
           }
-        });
+        });    
     dataGrid.addColumn(scaScoreColumn, "SCA Score");
     dataGrid.setColumnWidth(scaScoreColumn, 10, Unit.PCT);
     

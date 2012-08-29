@@ -102,6 +102,7 @@ public class MappedSeqTest {
   public void testToString() {
     System.out.println(mappedSeq.toString());
     assertEquals(true, mappedSeq.toString().endsWith("467\t\t721\t\tnull\t\tP\n"));
+    System.out.println(mappedSeq.toAlignedString());
   }
   
 }

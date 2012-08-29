@@ -1,5 +1,6 @@
 package edu.cuny.hunter.xie.covaweb.server;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -19,14 +20,17 @@ public class MappedSeq {
   
   private MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> hmmMSA;
   
-  private HashMap<Integer,Integer> alignedQueryMap;
-  private HashMap<Integer,Integer> pdbMap;
+  private HashMap<Integer,Integer> queryIndexToMSAIndexMap;
+  private HashMap<Integer,Integer> queryIndexToPdbIndexMap;
+  private HashMap<Integer,Integer> pdbIndexToMSAIndexMap;
   
   private ProteinSequence queryProteinSequence;
   private ProteinSequence pdbProteinSequence;
   
   private String pdbAlignedToMSA;
   private String alignedQueryFromMSA;
+
+  private HashMap<Integer,Integer> msaIndexToPdbIndexMap;
   
   public MappedSeq(ProteinSequence queryProteinSequence, Structure pdb,
       MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> alignment) {
@@ -50,22 +54,25 @@ public class MappedSeq {
     //The PDB will be aligned to the query, which will correspond to the positions in the multiple sequence alignment
     
     
-    // Iterate through the query sequence and get the corresponding position in
-    // the hmmMSA.
+    
+    /*************************************************************
+    * Iterate through the query sequence and get the corresponding position in
+    * the hmmMSA.
+    *************************************************************/
     try {
-      this.alignedQueryMap = new HashMap<Integer,Integer>();
+      this.queryIndexToMSAIndexMap = new HashMap<Integer,Integer>();
       int positionInHMM = 1;
       for (int i = 1; i <= querySeq.getLength(); i++) {
         if (alignedQuerySeq.getCompoundAt(positionInHMM).equals(
             querySeq.getCompoundAt(i))) {
-          alignedQueryMap.put(i, positionInHMM);
+          queryIndexToMSAIndexMap.put(i, positionInHMM);
           
         } else {
           while (!alignedQuerySeq.getCompoundAt(positionInHMM).equals(
               querySeq.getCompoundAt(i))) {
             positionInHMM++;
           }
-          alignedQueryMap.put(i, positionInHMM);
+          queryIndexToMSAIndexMap.put(i, positionInHMM);
         }
       }
     } catch (IndexOutOfBoundsException e) {
@@ -73,26 +80,32 @@ public class MappedSeq {
           "The original query sequence was not found in the alignment!", e);
     }
     
+    /*************************************************************
+    * Iterate through the protein sequence to match up the pdb to the query
+    * position and to the multiple sequence alignment
+    *************************************************************/
+    this.queryIndexToPdbIndexMap = new HashMap<Integer,Integer>();
+    this.pdbIndexToMSAIndexMap = new HashMap<Integer,Integer>();
+    this.msaIndexToPdbIndexMap = new HashMap<Integer,Integer>();
     
-    // Iterate through the protein sequence to match up the pdb to the query positions
-    // positions
-    this.pdbMap = new HashMap<Integer,Integer>();
-
     char[] alignedPDBToMSA = new char[alignedQuerySeq.getLength()];
     Arrays.fill(alignedPDBToMSA, '.');
     
     for (int i = 1; i <= pdbProteinSequence.getLength(); i++) {
-      // Key is the index in the queryProteinSequence, Value is the index in the
+      // Key is the index in the query, Value is the index in the
       // PDB
-      pdbMap.put(queryToPDBPair.getIndexInQueryForTargetAt(i), i);
+      queryIndexToPdbIndexMap.put(queryToPDBPair.getIndexInQueryForTargetAt(i), i);
+      pdbIndexToMSAIndexMap.put(i,queryIndexToMSAIndexMap.get(queryToPDBPair.getIndexInQueryForTargetAt(i)));
+      msaIndexToPdbIndexMap.put(queryIndexToMSAIndexMap.get(queryToPDBPair.getIndexInQueryForTargetAt(i)),i);
+
       logger.debug("Index in PDB: " + i + 
           " Index in Query: " + queryToPDBPair.getIndexInQueryForTargetAt(i) +
-          " Index in MSA: " + alignedQueryMap.get(queryToPDBPair.getIndexInQueryForTargetAt(i))+ 
+          " Index in MSA: " + pdbIndexToMSAIndexMap.get(i)+ 
           "\t" + pdbProteinSequence.getCompoundAt(i).toString().charAt(0));
       
       
  
-      alignedPDBToMSA[alignedQueryMap.get(queryToPDBPair.getIndexInQueryForTargetAt(i))-1]=pdbProteinSequence.getCompoundAt(i).toString().charAt(0);
+      alignedPDBToMSA[queryIndexToMSAIndexMap.get(queryToPDBPair.getIndexInQueryForTargetAt(i))-1]=pdbProteinSequence.getCompoundAt(i).toString().charAt(0);
     }
     
     
@@ -109,18 +122,26 @@ public class MappedSeq {
   }
   
   public int getIndexInPDBForQueryAt(int queryIndex) {
-    if (pdbMap.get(queryIndex) == null) {
+    if (queryIndexToPdbIndexMap.get(queryIndex) == null) {
       return -1;
     } else {
-      return pdbMap.get(queryIndex);
+      return queryIndexToPdbIndexMap.get(queryIndex);
     }
   }
   
   public int getIndexInHmmMSAForQueryAt(int queryIndex) {
-    if (alignedQueryMap.get(queryIndex) == null) {
+    if (queryIndexToMSAIndexMap.get(queryIndex) == null) {
       return -1;
     } else {
-      return alignedQueryMap.get(queryIndex);
+      return queryIndexToMSAIndexMap.get(queryIndex);
+    }
+  }
+  
+  public int getIndexInHmmMSAForPDBAt(int pdbIndex) {
+    if(pdbIndexToMSAIndexMap.get(pdbIndex)==null){
+      return -1;
+    }else {
+      return pdbIndexToMSAIndexMap.get(pdbIndex);
     }
   }
   
@@ -140,17 +161,28 @@ public class MappedSeq {
     StringBuilder builder = new StringBuilder();
     builder.append("QueryIndex\tAlignmentIndex\tPDBIndex\tCompound\n");
     for (int i = 1; i <= queryProteinSequence.getLength(); i++) {
-      builder.append(i + "\t\t" + alignedQueryMap.get(i) + "\t\t"
-          + pdbMap.get(i) + "\t\t" + queryProteinSequence.getCompoundAt(i)
+      builder.append(i + "\t\t" + queryIndexToMSAIndexMap.get(i) + "\t\t"
+          + queryIndexToPdbIndexMap.get(i) + "\t\t" + queryProteinSequence.getCompoundAt(i)
           + "\n");
     }
     return builder.toString();
   }
   
   public String toAlignedString() {
-    return "AlignedQueryFromMSA " + alignedQueryFromMSA + "\n" + 
-           "_________AlignedPDB " + pdbAlignedToMSA + "\n";
+    StringBuilder scale = new StringBuilder();
+    for(int i =10;i<alignedQueryFromMSA.length();i+=10){
+      scale.append(String.format("%10d", i));
+    }
     
+    return 
+        "______________Scale " + scale.toString().replaceAll(" ", ".") + "\n" +
+        "AlignedQueryFromMSA " + alignedQueryFromMSA + "\n" + 
+        "_________AlignedPDB " + pdbAlignedToMSA + "\n";
+    
+  }
+
+  public HashMap<Integer,Integer> getAlnPosToPdbPosMap() {
+    return msaIndexToPdbIndexMap;
   }
   
 }

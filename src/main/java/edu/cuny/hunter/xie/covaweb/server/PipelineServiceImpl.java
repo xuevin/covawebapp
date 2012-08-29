@@ -26,25 +26,17 @@ public class PipelineServiceImpl extends RemoteServiceServlet implements
   @Override
   public ResultsDataObject runPipeline(LoadDataObject object)
       throws PipelineException {
+    ResultsDataObject results = new ResultsDataObject();
+
+    
     // TODO - be able to handle the data objects with null values.
     Pipeline pipeline = new Pipeline(object);
     pipeline.run();
-    ResultsDataObject results = new ResultsDataObject();
-    results.setAlignmentString(pipeline.getResults().toAlignedString());
     
-    try {
-      logger.info("Starting Covariance Analysis");
-      MultipleSequenceAlignment<ProteinSequence,AminoAcidCompound> msa = ClustalWParser
-          .getMSA(new ByteArrayInputStream(object.getMsaString().getBytes()));
-      
-      ArrayList<CovaDataRow> list = ExecuteCOVA.getOutputFromBioJavaMSA(msa);
-      
-      results.setCovaDataObject(list);
-      logger.info("Covariance Analysis Complete " + list.size());
-    } catch (Exception e) {
-      throw new PipelineException(
-          "Encountered error during covariance analysis", e);
-    }
+    results.setAlignmentString(pipeline.getMappedSeqResults().toAlignedString());
+    results.setCovaDataObject(pipeline.getCovaResults());
+    results.setAlignmentPosToPdbPosMapping(pipeline.getMappedSeqResults().getAlnPosToPdbPosMap());
+    
     return (results);
     
   }
