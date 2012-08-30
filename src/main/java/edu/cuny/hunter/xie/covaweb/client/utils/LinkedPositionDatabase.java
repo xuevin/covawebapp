@@ -17,27 +17,91 @@ public class LinkedPositionDatabase {
   public LinkedPositionDatabase(ArrayList<CovaDataRow> list,
       HashMap<Integer,Integer> alignmentPosToPdbPosMapping) {
     
+    //First filter out which rows will be displayed
+    ArrayList<CovaDataRow> displayedData = new ArrayList<CovaDataRow>();
     for (CovaDataRow line : list) {
-      
       if (alignmentPosToPdbPosMapping.get(line.getPos1()) == null
           || alignmentPosToPdbPosMapping.get(line.getPos2()) == null) {
         
       } else {
-        addLinkedPositionData(new LinkedPositionData(line.getPos1(),
-            line.getPos2(), line.getScaScore(), line.getElscScore(),
-            line.getMiScore(), line.getOmesScore(), line.getCsumScore(), alignmentPosToPdbPosMapping.get(line
-                .getPos1()), alignmentPosToPdbPosMapping.get(line.getPos2())));
-        
-        
+        displayedData.add(line);
       }
     }
-    // logger.info("" + list.size());
-    // addLinkedPositionData(new LinkedPositionData(0, 1, 1.0, 2.0, 3.0, 4.0,
-    // 5.0, 6.0));
-    // addLinkedPositionData(new LinkedPositionData(1, 2, 1.0, 2.0, 3.0, 4.0,
-    // 5.0, 6.0));
+    
+    //Calculate sum
+    int count =0;
+    double sumScaScore=0;
+    double sumElscScore=0;
+    double sumMiScore=0;
+    double sumOmesScore=0;
+    double sumCSumScore=0;
+     
+    for(CovaDataRow line:displayedData){
+      count++;
+      sumScaScore+=line.getScaScore();
+      sumElscScore+=line.getElscScore();
+      sumMiScore+=line.getMiScore();
+      sumOmesScore+=line.getOmesScore();
+      sumCSumScore+=line.getCsumScore();
+    }
+    
+    //Calculate mean
+    double meanScaScore=sumScaScore/count;
+    double meanElscScore=sumElscScore/count;
+    double meanMiScore=sumMiScore/count;
+    double meanOmesScore=sumOmesScore/count;
+    double meanCSumScore=sumCSumScore/count;
+     
+    //Calculate variance
+    double varScaScore=0;
+    double varElscScore=0;
+    double varMiScore=0;
+    double varOmesScore=0;
+    double varCSumScore=0;
+
+    for(CovaDataRow line:displayedData){
+      count++;
+      varScaScore+=Math.pow(line.getScaScore()-meanScaScore,2);
+      varElscScore+=Math.pow(line.getElscScore()-meanElscScore,2);
+      varMiScore+=Math.pow(line.getMiScore()-meanMiScore,2);
+      varOmesScore+=Math.pow(line.getOmesScore()-meanOmesScore,2);
+      varCSumScore+=Math.pow(line.getCsumScore()-meanCSumScore,2);
+    }
+    
+    //Calculate Stdv
+    double stdvScaScore=Math.sqrt(varScaScore/count);
+    double stdvElscScore=Math.sqrt(varElscScore/count);
+    double stdvMiScore=Math.sqrt(varMiScore/count);
+    double stdvOmesScore=Math.sqrt(varOmesScore/count);
+    double stdvCSumScore=Math.sqrt(varCSumScore/count);
+
+    for (CovaDataRow line : displayedData) {
+        addLinkedPositionData(new LinkedPositionData(
+            line.getPos1(),
+            line.getPos2(),
+            line.getScaScore(),
+            line.getElscScore(),
+            line.getMiScore(),
+            line.getOmesScore(),
+            line.getCsumScore(),
+            alignmentPosToPdbPosMapping.get(line.getPos1()),
+            alignmentPosToPdbPosMapping.get(line.getPos2()),
+            getZScore(line.getScaScore(),meanScaScore,stdvScaScore),
+            getZScore(line.getElscScore(),meanElscScore,stdvElscScore),
+            getZScore(line.getMiScore(),meanMiScore,stdvMiScore),
+            getZScore(line.getOmesScore(),meanOmesScore,stdvOmesScore),
+            getZScore(line.getCsumScore(),meanCSumScore,stdvCSumScore)
+            ));
+        
+    }
+  }
+  
+  private double getZScore(double value, double mean, double stdv){
+    return value-mean/stdv;
     
   }
+  
+  
   
   private static int nextId = 0;
   
@@ -81,6 +145,11 @@ public class LinkedPositionDatabase {
     private final int id;
     private int pdbPos1;
     private int pdbPos2;
+    private double zScaScore;
+    private double zElscScore;
+    private double zMiScore;
+    private double zOmesScore;
+    private double zCsumScore;
     
     public static final ProvidesKey<LinkedPositionData> KEY_PROVIDER = new ProvidesKey<LinkedPositionData>() {
       public Object getKey(LinkedPositionData item) {
@@ -89,7 +158,8 @@ public class LinkedPositionDatabase {
     };
     
     public LinkedPositionData(int pos1, int pos2, double scaScore,
-        double elscScore, double miScore, double omesScore, double csumScore, int pdbPos1, int pdbPos2) {
+        double elscScore, double miScore, double omesScore, double csumScore, int pdbPos1, int pdbPos2,
+        double zScaScore, double zElscScore, double zMiScore, double zOmesScore, double zCsumScore) {
       
       this.pos1 = pos1;
       this.pos2 = pos2;
@@ -98,8 +168,13 @@ public class LinkedPositionDatabase {
       this.miScore = miScore;
       this.omesScore = omesScore;
       this.cSumScore = csumScore;
-      this.pdbPos1 = pdbPos1;
+      this.pdbPos1 = pdbPos1; //these are used to coordinate with the protein viewer which bonds should be visible
       this.pdbPos2 = pdbPos2;
+      this.zScaScore = zScaScore;
+      this.zElscScore = zElscScore;
+      this.zMiScore = zMiScore;
+      this.zOmesScore = zOmesScore;
+      this.zCsumScore = zCsumScore;
       
       this.id = nextId;
       nextId++;
